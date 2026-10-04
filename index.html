@@ -1,1049 +1,1309 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="color-scheme" content="light">
-<title>Study Smart — Cardiac &amp; Anthraquinone Glycosides</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Work+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
-<style>
-  :root{
-    --ink:#16261F;
-    --paper:#F4F1E6;
-    --paper-2:#ECE7D6;
-    --leaf:#2F6F5E;
-    --leaf-dark:#1F4A3D;
-    --bloom:#8B3A62;
-    --gold:#C99A3E;
-    --rust:#A8451F;
-    --line: rgba(22,38,31,.16);
-    --card: #FFFDF7;
-    --radius: 4px;
-    color-scheme: light;
-  }
-  *{box-sizing:border-box;}
-  html{scroll-behavior:smooth;}
-  body{
-    margin:0;
-    background:var(--paper);
-    color:var(--ink);
-    font-family:'Work Sans', sans-serif;
-    line-height:1.5;
-  }
-  h1,h2,h3,h4{font-family:'Fraunces', serif; margin:0; color:var(--leaf-dark);}
-  a{color:var(--leaf-dark);}
-  ::selection{background:var(--gold); color:var(--ink);}
-  :focus-visible{outline:2px solid var(--bloom); outline-offset:2px;}
-  @media (prefers-reduced-motion: reduce){
-    *{animation-duration:.001ms !important; transition-duration:.001ms !important;}
-  }
-
-  /* ===== Masthead ===== */
-  .mast{
-    background:#E6ECDD;
-    background-image:
-      radial-gradient(circle at 8% 20%, rgba(255,255,255,.55), transparent 40%),
-      radial-gradient(circle at 92% 80%, rgba(255,255,255,.45), transparent 40%);
-    color:var(--ink);
-    padding:2.4rem 1.6rem 0;
-    position:relative;
-    overflow:hidden;
-    border-bottom:1px solid var(--line);
-  }
-  .mast::after{
-    content:"";
-    position:absolute; inset:0;
-    background-image: repeating-linear-gradient(90deg, transparent, transparent 79px, rgba(31,74,61,.04) 80px);
-    pointer-events:none;
-  }
-  .mast-inner{max-width:1080px; margin:0 auto; position:relative;}
-  .mast-eyebrow{
-    font-size:.72rem;
-    letter-spacing:.14em;
-    color:var(--rust);
-    font-weight:600;
-    text-transform:uppercase;
-  }
-  .mast h1{
-    font-size:clamp(2.1rem, 6vw, 3.4rem);
-    font-weight:600;
-    margin:.3rem 0 .5rem;
-    letter-spacing:-.01em;
-  }
-  .mast p.sub{
-    max-width:46ch;
-    font-size:1rem;
-    color:#3C4C43;
-    margin-bottom:1.6rem;
-  }
-
-  nav.tabs{
-    display:flex;
-    flex-wrap:wrap;
-    gap:.35rem;
-    padding-bottom:0;
-    position:relative;
-  }
-  nav.tabs button{
-    font-family:'Work Sans', sans-serif;
-    font-size:.85rem;
-    font-weight:600;
-    background:rgba(31,74,61,.07);
-    color:var(--leaf-dark);
-    border:1px solid rgba(31,74,61,.25);
-    border-bottom:none;
-    padding:.7rem 1.05rem;
-    border-radius:var(--radius) var(--radius) 0 0;
-    cursor:pointer;
-    transition:background .15s ease, color .15s ease;
-  }
-  nav.tabs button:hover{ background:rgba(31,74,61,.15); }
-  nav.tabs button.active{
-    background:var(--paper);
-    color:var(--leaf-dark);
-    border-color:var(--leaf);
-  }
-
-  main{
-    max-width:1080px;
-    margin:0 auto;
-    padding:2.2rem 1.6rem 4rem;
-  }
-  .panel{display:none;}
-  .panel.active{display:block; animation:rise .35s ease;}
-  @keyframes rise{ from{opacity:0; transform:translateY(6px);} to{opacity:1; transform:translateY(0);} }
-
-  .panel > .lede{
-    max-width:62ch;
-    margin-bottom:1.8rem;
-  }
-  .panel h2{
-    font-size:1.7rem;
-    margin-bottom:.4rem;
-  }
-  .panel .lede p{color:#3C4C43; font-size:.98rem;}
-
-  /* ===== chips (shared filter/tab pattern) ===== */
-  .chiprow{
-    display:flex;
-    flex-wrap:wrap;
-    gap:.5rem;
-    margin-bottom:1.5rem;
-  }
-  .chip{
-    font-family:'Work Sans', sans-serif;
-    font-size:.82rem;
-    font-weight:600;
-    padding:.5rem .95rem;
-    border-radius:999px;
-    border:1px solid var(--leaf);
-    background:transparent;
-    color:var(--leaf-dark);
-    cursor:pointer;
-  }
-  .chip.active{ background:var(--leaf); color:#fff; }
-
-  /* ===== Overview ===== */
-  .law-grid{
-    display:grid;
-    grid-template-columns:repeat(auto-fit, minmax(260px,1fr));
-    gap:1rem;
-  }
-  .law-card{
-    background:var(--card);
-    border:1px solid var(--line);
-    border-left:4px solid var(--leaf);
-    border-radius:var(--radius);
-    padding:1.1rem 1.2rem;
-  }
-  .law-card[data-group="cardiac"]{border-left-color:var(--bloom);}
-  .law-card[data-group="antra"]{border-left-color:var(--gold);}
-  .law-card h3{ font-size:1.02rem; margin-bottom:.5rem; }
-  .law-card ul{margin:0; padding-left:1.1rem;}
-  .law-card li{ font-size:.9rem; margin-bottom:.35rem; color:#2b3830;}
-  .law-card.hide{display:none;}
-
-  /* ===== Diagrams ===== */
-  .diagram-block{ display:none; }
-  .diagram-block.active{ display:block; }
-  .stage{
-    background:var(--card);
-    border:1px solid var(--line);
-    border-radius:var(--radius);
-    padding:1.4rem;
-  }
-  .caption-box{
-    margin-top:1rem;
-    background:var(--paper-2);
-    border-radius:var(--radius);
-    padding:.9rem 1.1rem;
-    font-size:.92rem;
-    min-height:3.4em;
-    border-left:4px solid var(--gold);
-  }
-  svg{max-width:100%; height:auto;}
-  .hotspot{ cursor:pointer; }
-  .hotspot circle{ fill:var(--gold); stroke:var(--leaf-dark); stroke-width:2; transition:r .15s ease; }
-  .hotspot:hover circle{ r:11; }
-  .hotspot text{ font-family:'Work Sans',sans-serif; font-size:11px; font-weight:600; fill:var(--leaf-dark); }
-
-  .link-grid{
-    display:grid;
-    grid-template-columns:repeat(auto-fit, minmax(190px,1fr));
-    gap:.9rem;
-  }
-  .link-card{
-    background:var(--paper-2);
-    border-radius:var(--radius);
-    padding:1rem;
-    cursor:pointer;
-    border:1px solid transparent;
-  }
-  .link-card:hover{border-color:var(--leaf);}
-  .link-card h4{font-size:.95rem; margin-bottom:.3rem;}
-  .link-card p{font-size:.82rem; margin:0; color:#4a5a4f; display:none;}
-  .link-card.open p{display:block;}
-
-  .ladder{
-    display:flex; flex-wrap:wrap; align-items:center; gap:.4rem;
-  }
-  .ladder button{
-    font-family:'Work Sans',sans-serif; font-weight:600; font-size:.85rem;
-    padding:.6rem 1rem; border-radius:var(--radius);
-    border:1px solid var(--leaf); background:#fff; color:var(--leaf-dark);
-    cursor:pointer;
-  }
-  .ladder button.active{ background:var(--bloom); border-color:var(--bloom); color:#fff; }
-  .arrow{color:var(--gold); font-size:1.1rem;}
-
-  .toggle-pair{display:flex; gap:.6rem; margin-bottom:1rem;}
-  .toggle-pair button{
-    flex:1; padding:.7rem; border-radius:var(--radius); cursor:pointer;
-    border:1px solid var(--leaf); background:#fff; color:var(--leaf-dark); font-weight:600;
-  }
-  .toggle-pair button.active{ background:var(--leaf); color:#fff; }
-  .compare-card{display:none;}
-  .compare-card.active{display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr)); gap:.8rem;}
-  .stat{background:var(--paper-2); border-radius:var(--radius); padding:.8rem;}
-  .stat b{display:block; font-size:1.3rem; color:var(--bloom); font-family:'Fraunces',serif;}
-  .stat span{font-size:.78rem; color:#4a5a4f;}
-
-  .flow{display:none; align-items:center; flex-wrap:wrap; gap:.4rem;}
-  .flow.active{display:flex;}
-  .flow-box{
-    background:var(--paper-2); border-radius:var(--radius);
-    padding:.7rem .95rem; font-size:.82rem; text-align:center; min-width:110px;
-  }
-
-  table.plants{
-    width:100%; border-collapse:collapse; font-size:.88rem;
-  }
-  table.plants th{
-    text-align:left; padding:.6rem .7rem; background:#DCE7D8; color:var(--leaf-dark); border-bottom:2px solid var(--leaf); font-family:'Work Sans'; font-weight:600;
-  }
-  table.plants td{ padding:.65rem .7rem; border-bottom:1px solid var(--line); }
-  table.plants tr.row{cursor:pointer;}
-  table.plants tr.row:hover{background:var(--paper-2);}
-  tr.detail{display:none;}
-  tr.detail.open{display:table-row;}
-  tr.detail td{background:#FBF8EE; font-size:.85rem; color:#3C4C43;}
-
-  /* ===== Mini map ===== */
-  .mm-wrap{
-    display:grid;
-    grid-template-columns: 300px 1fr;
-    gap:1.2rem;
-    align-items:start;
-  }
-  .mm-list{
-    display:flex; flex-direction:column; gap:.35rem;
-    max-height:560px; overflow-y:auto; padding-right:.3rem;
-  }
-  .mm-list button{
-    text-align:left; font-family:'Work Sans'; font-size:.87rem; font-weight:500;
-    padding:.6rem .8rem; border-radius:var(--radius); border:1px solid var(--line);
-    background:var(--card); color:var(--ink); cursor:pointer;
-  }
-  .mm-list button.active{ background:var(--leaf); color:#fff; border-color:var(--leaf); }
-  .mm-panel{
-    position:sticky; top:1rem;
-    background:var(--card);
-    border:1px solid var(--line);
-    border-top:4px solid var(--bloom);
-    border-radius:var(--radius);
-    padding:1.4rem 1.5rem;
-    min-height:300px;
-  }
-  .mm-panel h3{ margin-bottom:.6rem; font-size:1.25rem; }
-  .mm-panel p{ font-size:.92rem; color:#2b3830; margin:0; }
-  @media (max-width:720px){ .mm-wrap{grid-template-columns:1fr;} .mm-panel{position:static;} }
-
-  /* ===== Flashcards ===== */
-  .fc-toolbar{display:flex; justify-content:space-between; align-items:center; margin-bottom:1rem; flex-wrap:wrap; gap:.6rem;}
-  .fc-toolbar button{
-    font-family:'Work Sans'; font-weight:600; font-size:.85rem; padding:.55rem 1rem;
-    border-radius:var(--radius); border:1px solid var(--leaf); background:var(--leaf); color:#fff; cursor:pointer;
-  }
-  .fc-count{font-size:.85rem; color:#4a5a4f;}
-  .fc-grid{
-    display:grid;
-    grid-template-columns:repeat(auto-fill, minmax(230px,1fr));
-    gap:1rem;
-  }
-  .fc{
-    perspective:1000px;
-    height:230px;
-    cursor:pointer;
-  }
-  .fc-inner{
-    position:relative; width:100%; height:100%;
-    transition:transform .5s;
-    transform-style:preserve-3d;
-  }
-  .fc.flipped .fc-inner{ transform:rotateY(180deg); }
-  .fc-face{
-    position:absolute; inset:0;
-    backface-visibility:hidden;
-    border-radius:var(--radius);
-    padding:1rem;
-    display:flex; align-items:center; justify-content:center;
-    text-align:center; font-size:.88rem;
-    border:1px solid var(--line);
-    overflow-y:auto;
-  }
-  .fc-front{ background:var(--card); color:var(--leaf-dark); font-weight:600; font-family:'Fraunces',serif; font-size:1rem;}
-  .fc-back{ background:#E4EDE0; color:var(--ink); border-color:var(--leaf); transform:rotateY(180deg); align-items:flex-start; text-align:left; font-size:.82rem; line-height:1.42; }
-
-  /* ===== Quiz ===== */
-  .quiz-top{display:flex; justify-content:space-between; align-items:center; margin-bottom:1.2rem; flex-wrap:wrap; gap:.6rem;}
-  .quiz-score{
-    font-family:'Fraunces',serif; font-size:1.05rem; background:var(--paper-2);
-    padding:.5rem 1rem; border-radius:var(--radius);
-  }
-  .quiz-top button{
-    font-family:'Work Sans'; font-weight:600; font-size:.85rem; padding:.55rem 1rem;
-    border-radius:var(--radius); border:1px solid var(--bloom); background:#fff; color:var(--bloom); cursor:pointer;
-  }
-  .q-card{
-    background:var(--card); border:1px solid var(--line); border-radius:var(--radius);
-    padding:1.1rem 1.2rem; margin-bottom:.9rem;
-  }
-  .q-num{font-size:.75rem; color:var(--gold); font-weight:700; letter-spacing:.06em;}
-  .q-text{font-family:'Fraunces',serif; font-size:1.05rem; margin:.3rem 0 .8rem;}
-  .q-opts{ display:grid; gap:.5rem; }
-  .q-opt{
-    text-align:left; font-family:'Work Sans'; font-size:.9rem;
-    border:1px solid var(--line); border-radius:var(--radius); background:#fff;
-    padding:.6rem .8rem; cursor:pointer;
-  }
-  .q-opt:hover{border-color:var(--leaf);}
-  .q-opt.correct{ background:#E4F0E7; border-color:var(--leaf); color:var(--leaf-dark); font-weight:600; }
-  .q-opt.wrong{ background:#F6E3DD; border-color:var(--rust); color:var(--rust); }
-  .q-opt[disabled]{cursor:default;}
-
-
-  /* ===== Copyright bars ===== */
-  .copy-bar{
-    text-align:center; padding:.55rem 1rem; font-size:.8rem; color:#3C4C43;
-    background:var(--card); border-bottom:1px solid var(--line);
-  }
-  .copy-bar a, footer a{ font-weight:600; text-decoration:none; color:var(--leaf-dark); }
-  .copy-bar a:hover, footer a:hover{ text-decoration:underline; }
-  .copy-bar .sep, footer .sep{ margin:0 .5rem; color:var(--gold); }
-  footer .copy-line{ display:block; margin-bottom:.2rem; }
-
-  footer{
-    text-align:center; padding:1.6rem; font-size:.8rem; color:#5c6b60;
-    border-top:1px solid var(--line); background:var(--paper-2);
-  }
-</style>
-</head>
-<body>
-<div class="copy-bar">© 2026 Anmar Taha. All rights reserved.<span class="sep">|</span>Telegram: <a href="https://t.me/AnmarTaha" target="_blank" rel="noopener">@AnmarTaha</a><span class="sep">|</span>Instagram: <a href="https://www.instagram.com/a.za18" target="_blank" rel="noopener">a.za18</a></div>
-
-<header class="mast">
-  <div class="mast-inner">
-    <div class="mast-eyebrow">Pharmacognosy · Field Notes</div>
-    <h1>Study Smart</h1>
-    <p class="sub">Cardiac and anthraquinone glycosides, distilled into five ways to review — rules, structures, quick recall, and self-testing.</p>
-    <nav class="tabs" id="tabs">
-      <button data-target="overview" class="active">Overview</button>
-      <button data-target="diagrams">Interactive Diagrams</button>
-      <button data-target="minimap">Mini Map</button>
-      <button data-target="flashcards">Flash Cards</button>
-      <button data-target="quiz">Quiz Bank</button>
-    </nav>
-  </div>
-</header>
-
-<main>
-
-  <!-- ============ OVERVIEW ============ -->
-  <section id="overview" class="panel active">
-    <div class="lede">
-      <h2>Overview</h2>
-      <p>The rules that actually get tested — not the full lecture. Filter by topic.</p>
-    </div>
-
-    <div class="chiprow" id="ov-chips">
-      <button class="chip active" data-g="all">All</button>
-      <button class="chip" data-g="basics">Glycoside Basics</button>
-      <button class="chip" data-g="cardiac">Cardiac Glycosides</button>
-      <button class="chip" data-g="antra">Anthraquinone Glycosides</button>
-    </div>
-
-    <div class="law-grid" id="ov-grid">
-      <div class="law-card" data-group="basics">
-        <h3>Glycon &amp; Aglycon</h3>
-        <ul>
-          <li>Glycoside = Glycon (sugar) + glycosidic linkage + Aglycon (non-sugar).</li>
-          <li>Most common sugar: β-glucose; only the β-form occurs naturally in plants.</li>
-          <li>Chemically, glycosides are acetals — essentially sugar ethers.</li>
-          <li>Glycon → solubility, absorption &amp; distribution (kinetics).</li>
-          <li>Aglycon → responsible for the pharmacological activity.</li>
-        </ul>
-      </div>
-      <div class="law-card" data-group="basics">
-        <h3>Linkage Types</h3>
-        <ul>
-          <li>O-glycoside — most common; sugar linked via oxygen.</li>
-          <li>S-glycoside — sugar linked to sulfur, e.g. sinigrin.</li>
-          <li>N-glycoside — sugar linked to nitrogen, e.g. adenosine.</li>
-          <li>C-glycoside — sugar bound directly to carbon, e.g. aloin.</li>
-        </ul>
-      </div>
-      <div class="law-card" data-group="basics">
-        <h3>Stability &amp; Plant Role</h3>
-        <ul>
-          <li>Hydrolyzed by acids, stable to alkalis; also cleaved by glycosidase enzymes.</li>
-          <li>Emulsin (bitter almond) and Myrosine (black mustard) are classic hydrolyzing enzymes.</li>
-          <li>Plant roles: detoxification, defense, sugar reserve, pigmentation, toxin storage.</li>
-        </ul>
-      </div>
-
-      <div class="law-card" data-group="cardiac">
-        <h3>Cardiac Genin Structure</h3>
-        <ul>
-          <li>Steroidal aglycon = cyclopentaphenanthrene nucleus.</li>
-          <li>β-OH at C-3 always carries the glycosidic linkage.</li>
-          <li>β-OH at C-14 → maximal activity, rapid action.</li>
-          <li>Unsaturated 5- or 6-membered lactone ring at C-17, beta configuration.</li>
-          <li>Ring junctions: A/B usually cis, B/C always trans, C/D always cis.</li>
-        </ul>
-      </div>
-      <div class="law-card" data-group="cardiac">
-        <h3>Mechanism &amp; Use</h3>
-        <ul>
-          <li>Inhibits Na-K ATPase → ↑ intracellular Ca²⁺ → ↑ inotropy, ↓ conduction velocity.</li>
-          <li>Increases cardiac output/work capacity without raising oxygen consumption.</li>
-          <li>Main use: congestive heart failure (CHF). Digoxin is the most widely used drug.</li>
-          <li>Biosynthesis: acetate–mevalonate pathway; pregnenolone +C2 → cardenolide, +C3 → bufadienolide.</li>
-        </ul>
-      </div>
-      <div class="law-card" data-group="cardiac">
-        <h3>Cardenolide vs Bufadienolide</h3>
-        <ul>
-          <li>Cardenolide = C23, 5-membered lactone (e.g. digitoxigenin).</li>
-          <li>Bufadienolide = C24, 6-membered lactone (e.g. scillarenin).</li>
-          <li>Digitalis purpurea (foxglove): digitoxin, gitoxin, gitaloxin.</li>
-          <li>Digitalis lanata: source of digoxin — more rapidly absorbed than purpurea glycosides.</li>
-          <li>Nerium oleander: oleandrin &amp; neandrin — highly toxic; treat with activated charcoal + supportive care.</li>
-          <li>Squill (Urginea): scillaren A — bufadienolide; red squill is used as rat poison.</li>
-        </ul>
-      </div>
-
-      <div class="law-card" data-group="antra">
-        <h3>Oxidation Levels</h3>
-        <ul>
-          <li>Anthracene derivatives: anthranol, anthrone, oxanthrone, anthraquinone, dianthrone.</li>
-          <li>Free anthraquinones show little activity — the sugar transports the aglycon to the colon.</li>
-          <li>Anthranol/anthrone glycosides are more irritant/gripping than anthraquinone forms.</li>
-        </ul>
-      </div>
-      <div class="law-card" data-group="antra">
-        <h3>Laxative Action</h3>
-        <ul>
-          <li>↑ Tone of colon smooth muscle + stimulates water/electrolyte secretion.</li>
-          <li>Effect appears 8–12 hours after oral dosing (colonic bacteria hydrolyze the glycoside).</li>
-          <li>Long-term use → laxative dependence &amp; habitual constipation.</li>
-          <li>Biosynthesis: shikimic acid → 1-naphthol + IPP → cyclization → anthraquinone nucleus.</li>
-        </ul>
-      </div>
-      <div class="law-card" data-group="antra">
-        <h3>Key Plants</h3>
-        <ul>
-          <li>Senna (Cassia acutifolia/angustifolia): Sennosides A/B (major), C/D (minor) — dianthrone O-glycosides.</li>
-          <li>Cascara sagrada (Rhamnus purshiana): Cascarosides A–D; bark aged 1 year to lose emetic principle.</li>
-          <li>Aloe (Aloe perri/barbadensis): Barbaloin (C-glycoside) → aloe-emodin; also used for burns.</li>
-          <li>Rhubarb (Rheum officinale): chrysophanol, rhein, aloe-emodin; stronger gripping effect.</li>
-        </ul>
-      </div>
-    </div>
-  </section>
-
-  <!-- ============ DIAGRAMS ============ -->
-  <section id="diagrams" class="panel">
-    <div class="lede">
-      <h2>Interactive Diagrams</h2>
-      <p>Every structure, pathway and table from the lecture, click to explore.</p>
-    </div>
-
-    <div class="chiprow" id="dg-chips">
-      <button class="chip active" data-d="anatomy">Glycoside &amp; Aglycon Anatomy</button>
-      <button class="chip" data-d="linkage">Linkage Types</button>
-      <button class="chip" data-d="ladder">Oxidation Ladder</button>
-      <button class="chip" data-d="compare">Cardenolide vs Bufadienolide</button>
-      <button class="chip" data-d="biosynth">Biosynthesis Pathways</button>
-      <button class="chip" data-d="plants">Laxative Plants Table</button>
-    </div>
-
-    <div class="stage">
-
-      <!-- Anatomy -->
-      <div class="diagram-block active" id="d-anatomy">
-        <svg viewBox="0 0 520 260" role="img" aria-label="Cardioactive aglycon ring diagram">
-          <rect x="40" y="90" width="90" height="90" rx="6" fill="#ECE7D6" stroke="#2F6F5E"/>
-          <text x="85" y="140" text-anchor="middle" font-family="Work Sans" font-size="16" font-weight="700" fill="#1F4A3D">A</text>
-          <rect x="130" y="90" width="90" height="90" rx="6" fill="#ECE7D6" stroke="#2F6F5E"/>
-          <text x="175" y="140" text-anchor="middle" font-family="Work Sans" font-size="16" font-weight="700" fill="#1F4A3D">B</text>
-          <rect x="220" y="70" width="90" height="90" rx="6" fill="#ECE7D6" stroke="#2F6F5E"/>
-          <text x="265" y="120" text-anchor="middle" font-family="Work Sans" font-size="16" font-weight="700" fill="#1F4A3D">C</text>
-          <rect x="310" y="60" width="80" height="80" rx="6" fill="#ECE7D6" stroke="#2F6F5E"/>
-          <text x="350" y="105" text-anchor="middle" font-family="Work Sans" font-size="16" font-weight="700" fill="#1F4A3D">D</text>
-
-          <line x1="40" y1="180" x2="10" y2="200" stroke="#8B3A62" stroke-width="2"/>
-          <text x="5" y="215" font-family="Work Sans" font-size="11" fill="#8B3A62">Sugar–O</text>
-
-          <g class="hotspot" onclick="showAnatomy('c3')" transform="translate(45,175)">
-            <circle r="9"/><text x="0" y="4" text-anchor="middle" fill="#fff" font-size="9">3</text>
-          </g>
-          <g class="hotspot" onclick="showAnatomy('c14')" transform="translate(300,150)">
-            <circle r="9"/><text x="0" y="4" text-anchor="middle" fill="#fff" font-size="9">14</text>
-          </g>
-          <g class="hotspot" onclick="showAnatomy('c17')" transform="translate(390,75)">
-            <circle r="9"/><text x="0" y="4" text-anchor="middle" fill="#fff" font-size="9">17</text>
-          </g>
-
-          <path d="M395,60 C420,40 450,45 445,70 C442,88 415,85 400,72" fill="none" stroke="#2F6F5E" stroke-width="2"/>
-          <text x="450" y="55" font-family="Work Sans" font-size="11" fill="#2F6F5E">Lactone ring</text>
-        </svg>
-        <div class="caption-box" id="anatomyCaption">Click a numbered position (3, 14, 17) on the ring system above to see what happens there.</div>
-      </div>
-
-      <!-- Linkage -->
-      <div class="diagram-block" id="d-linkage">
-        <div class="link-grid" id="linkGrid">
-          <div class="link-card" onclick="toggleLink(this)">
-            <h4>O-glycoside</h4>
-            <p>Sugar linked via an oxygen atom to an alcoholic, phenolic or carboxyl group of the aglycon. The most widely distributed type — e.g. digoxin.</p>
-          </div>
-          <div class="link-card" onclick="toggleLink(this)">
-            <h4>S-glycoside</h4>
-            <p>Sugar is attached to the sulfur atom of the aglycon — e.g. sinigrin (black mustard).</p>
-          </div>
-          <div class="link-card" onclick="toggleLink(this)">
-            <h4>N-glycoside</h4>
-            <p>Sugar is linked to a nitrogen (amino group) of the aglycon — e.g. adenosine, the nucleosides of DNA/RNA.</p>
-          </div>
-          <div class="link-card" onclick="toggleLink(this)">
-            <h4>C-glycoside</h4>
-            <p>Sugar is condensed directly onto a carbon atom of the aglycon, resistant to ordinary hydrolysis — e.g. aloin (barbaloin).</p>
-          </div>
-        </div>
-      </div>
-
-      <!-- Ladder -->
-      <div class="diagram-block" id="d-ladder">
-        <div class="ladder" id="ladderRow">
-          <button class="active" onclick="showLadder(this,'anthranol')">Anthranol</button>
-          <span class="arrow">→</span>
-          <button onclick="showLadder(this,'anthrone')">Anthrone</button>
-          <span class="arrow">→</span>
-          <button onclick="showLadder(this,'oxanthrone')">Oxanthrone</button>
-          <span class="arrow">→</span>
-          <button onclick="showLadder(this,'anthraquinone')">Anthraquinone</button>
-          <span class="arrow">→</span>
-          <button onclick="showLadder(this,'dianthrone')">Dianthrone</button>
-        </div>
-        <div class="caption-box" id="ladderCaption">Anthranol: the most reduced form, an –OH substituted anthracene. Anthranol and anthrone interconvert by oxidation/reduction.</div>
-      </div>
-
-      <!-- Compare -->
-      <div class="diagram-block" id="d-compare">
-        <div class="toggle-pair">
-          <button class="active" onclick="showCompare(this,'cardenolide')">Cardenolide</button>
-          <button onclick="showCompare(this,'bufadienolide')">Bufadienolide</button>
-        </div>
-        <div class="compare-card active" id="compare-cardenolide">
-          <div class="stat"><b>C23</b><span>Total carbon count</span></div>
-          <div class="stat"><b>5-membered</b><span>Lactone ring at C-17</span></div>
-          <div class="stat"><b>Digitoxigenin</b><span>Reference genin</span></div>
-          <div class="stat"><b>Digitalis</b><span>Typical source plant</span></div>
-        </div>
-        <div class="compare-card" id="compare-bufadienolide">
-          <div class="stat"><b>C24</b><span>Total carbon count</span></div>
-          <div class="stat"><b>6-membered</b><span>Lactone ring at C-17</span></div>
-          <div class="stat"><b>Scillarenin</b><span>Reference genin</span></div>
-          <div class="stat"><b>Urginea (squill)</b><span>Typical source plant</span></div>
-        </div>
-      </div>
-
-      <!-- Biosynthesis -->
-      <div class="diagram-block" id="d-biosynth">
-        <div class="toggle-pair">
-          <button class="active" onclick="showFlow(this,'flow-cardiac')">Cardiac Glycosides</button>
-          <button onclick="showFlow(this,'flow-antra')">Anthraquinones</button>
-        </div>
-        <div class="flow active" id="flow-cardiac">
-          <div class="flow-box">Acetate–mevalonate pathway</div><span class="arrow">→</span>
-          <div class="flow-box">Squalene</div><span class="arrow">→</span>
-          <div class="flow-box">Cholesterol</div><span class="arrow">→</span>
-          <div class="flow-box">Pregnenolone</div><span class="arrow">→</span>
-          <div class="flow-box">+C2 → Cardenolide<br>+C3 → Bufadienolide</div>
-        </div>
-        <div class="flow" id="flow-antra">
-          <div class="flow-box">Shikimic acid</div><span class="arrow">→</span>
-          <div class="flow-box">1-Naphthol</div><span class="arrow">+ IPP →</span>
-          <div class="flow-box">Intermediate</div><span class="arrow">cyclization →</span>
-          <div class="flow-box">Anthraquinone nucleus</div>
-        </div>
-      </div>
-
-      <!-- Plants table -->
-      <div class="diagram-block" id="d-plants">
-        <table class="plants">
-          <thead><tr><th>Drug</th><th>Source plant</th><th>Family</th><th>Main constituents</th></tr></thead>
-          <tbody>
-            <tr class="row" onclick="toggleRow('r1')"><td>Senna</td><td>Cassia acutifolia / angustifolia</td><td>Leguminosae</td><td>Sennoside A/B/C/D</td></tr>
-            <tr class="detail" id="r1"><td colspan="4">Dimeric dianthrone O-glycosides. Sennosides A &amp; B are optical isomers (homodianthrone, 2× rhein); C &amp; D are hetero-anthrones (rhein + aloe-emodin). Used as a cathartic laxative; dose 12–15 mg once daily. Not for use beyond a week.</td></tr>
-
-            <tr class="row" onclick="toggleRow('r2')"><td>Cascara sagrada</td><td>Rhamnus purshiana</td><td>Rhamnaceae</td><td>Cascaroside A/B/C/D</td></tr>
-            <tr class="detail" id="r2"><td colspan="4">Anthrone disaccharide O- and C-glycosides. A/B carry a CH₂OH side chain, C/D carry CH₃. Bark must be aged at least one year — fresh bark has an emetic principle. Restores natural colon tone in habitual constipation.</td></tr>
-
-            <tr class="row" onclick="toggleRow('r3')"><td>Aloe</td><td>Aloe perri / barbadensis</td><td>Liliaceae</td><td>Barbaloin</td></tr>
-            <tr class="detail" id="r3"><td colspan="4">C-glycoside; hydrolyzes to aloe-emodin. About 50 species vary qualitatively/quantitatively. Also used topically for burns, sunburn and radiation burns via its polysaccharide (pectin, glucomannan) content.</td></tr>
-
-            <tr class="row" onclick="toggleRow('r4')"><td>Rhubarb</td><td>Rheum officinale</td><td>Polygonaceae</td><td>Chrysophanol, rhein, aloe-emodin</td></tr>
-            <tr class="detail" id="r4"><td colspan="4">Cathartic laxative with astringent properties. Less widely used than senna/cascara because of a stronger gripping effect.</td></tr>
-          </tbody>
-        </table>
-      </div>
-
-    </div>
-  </section>
-
-  <!-- ============ MINI MAP ============ -->
-  <section id="minimap" class="panel">
-    <div class="lede">
-      <h2>Mini Map</h2>
-      <p>Pick any topic on the left — its notes open on the right.</p>
-    </div>
-    <div class="mm-wrap">
-      <div class="mm-list" id="mmList"></div>
-      <div class="mm-panel">
-        <h3 id="mmTitle">Choose a topic</h3>
-        <p id="mmText">Select any title from the list to display its notes here.</p>
-      </div>
-    </div>
-  </section>
-
-  <!-- ============ FLASHCARDS ============ -->
-  <section id="flashcards" class="panel">
-    <div class="lede">
-      <h2>Flash Cards</h2>
-      <p>Click a card to flip it. Term on the front, explanation on the back.</p>
-    </div>
-    <div class="chiprow" id="fc-chips">
-      <button class="chip active" data-lvl="1">Level 1 — Easy (25)</button>
-      <button class="chip" data-lvl="2">Level 2 — Medium (15)</button>
-      <button class="chip" data-lvl="3">Level 3 — Hard (10)</button>
-    </div>
-    <div class="fc-toolbar">
-      <span class="fc-count" id="fcCount"></span>
-      <button onclick="shuffleFlashcards()">Shuffle cards</button>
-    </div>
-    <div class="fc-grid" id="fcGrid"></div>
-  </section>
-
-  <!-- ============ QUIZ ============ -->
-  <section id="quiz" class="panel">
-    <div class="lede">
-      <h2>Quiz Bank</h2>
-      <p>Answer, then compare — questions and answer choices are reshuffled every time you open the file or restart.</p>
-    </div>
-    <div class="chiprow" id="qz-chips">
-      <button class="chip active" data-lvl="1">Level 1 — Easy (25)</button>
-      <button class="chip" data-lvl="2">Level 2 — Medium (15)</button>
-      <button class="chip" data-lvl="3">Level 3 — Hard (10)</button>
-    </div>
-    <div class="quiz-top">
-      <div class="quiz-score">Score: <span id="quizScore">0</span> / <span id="quizTotal">0</span></div>
-      <button onclick="buildQuiz()">Restart quiz</button>
-    </div>
-    <div id="quizList"></div>
-  </section>
-
-</main>
-
-<footer><span class="copy-line">© 2026 Anmar Taha. All rights reserved.</span>Telegram: <a href="https://t.me/AnmarTaha" target="_blank" rel="noopener">@AnmarTaha</a><span class="sep">|</span>Instagram: <a href="https://www.instagram.com/a.za18" target="_blank" rel="noopener">a.za18</a></footer>
-
-<script>
-/* ---------- Tab navigation ---------- */
-const tabButtons = document.querySelectorAll('#tabs button');
-tabButtons.forEach(btn=>{
-  btn.addEventListener('click', ()=>{
-    tabButtons.forEach(b=>b.classList.remove('active'));
-    btn.classList.add('active');
-    document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
-    document.getElementById(btn.dataset.target).classList.add('active');
-  });
-});
-
-/* ---------- Overview chips ---------- */
-document.querySelectorAll('#ov-chips .chip').forEach(chip=>{
-  chip.addEventListener('click', ()=>{
-    document.querySelectorAll('#ov-chips .chip').forEach(c=>c.classList.remove('active'));
-    chip.classList.add('active');
-    const g = chip.dataset.g;
-    document.querySelectorAll('#ov-grid .law-card').forEach(card=>{
-      card.classList.toggle('hide', g!=='all' && card.dataset.group!==g);
-    });
-  });
-});
-
-/* ---------- Diagrams chip switching ---------- */
-document.querySelectorAll('#dg-chips .chip').forEach(chip=>{
-  chip.addEventListener('click', ()=>{
-    document.querySelectorAll('#dg-chips .chip').forEach(c=>c.classList.remove('active'));
-    chip.classList.add('active');
-    document.querySelectorAll('.diagram-block').forEach(b=>b.classList.remove('active'));
-    document.getElementById('d-'+chip.dataset.d).classList.add('active');
-  });
-});
-
-/* Anatomy hotspots */
-const anatomyText = {
-  c3: "C-3: always carries the β-OH used for the glycosidic linkage to the sugar (mono-, di-, tri- or tetrasaccharide).",
-  c14: "C-14: a second β-OH group. Its presence makes the glycoside very active with rapid onset; its absence greatly reduces activity.",
-  c17: "C-17: bears the α,β-unsaturated lactone ring in beta configuration — the feature that actually converts a steroid into a cardio-active drug."
-};
-function showAnatomy(id){
-  document.getElementById('anatomyCaption').textContent = anatomyText[id];
-}
-
-/* Linkage cards */
-function toggleLink(card){
-  const wasOpen = card.classList.contains('open');
-  document.querySelectorAll('#linkGrid .link-card').forEach(c=>c.classList.remove('open'));
-  if(!wasOpen) card.classList.add('open');
-}
-
-/* Oxidation ladder */
-const ladderText = {
-  anthranol: "Anthranol: the most reduced form, an –OH substituted anthracene. Anthranol and anthrone interconvert by oxidation/reduction.",
-  anthrone: "Anthrone: a C=O at position 9. Anthrone/anthranol glycosides give a more irritant, gripping laxative effect than anthraquinones.",
-  oxanthrone: "Oxanthrone: intermediate oxidation level, carrying both a C=O (position 9) and an –OH (position 10).",
-  anthraquinone: "Anthraquinone: fully oxidized, two C=O groups (positions 9 &amp; 10). The main pharmacologically active laxative form.",
-  dianthrone: "Dianthrone: two anthrone units joined C–C, e.g. sennosides. This bond resists ordinary hydrolysis and needs oxidative hydrolysis (FeCl₃) to release free anthraquinones."
-};
-function showLadder(btn,key){
-  document.querySelectorAll('#ladderRow button').forEach(b=>b.classList.remove('active'));
-  btn.classList.add('active');
-  document.getElementById('ladderCaption').innerHTML = ladderText[key];
-}
-
-/* Compare toggle */
-function showCompare(btn,key){
-  document.querySelectorAll('.toggle-pair button').forEach(b=>{
-    if(b.closest('#d-compare')) b.classList.remove('active');
-  });
-  btn.classList.add('active');
-  document.querySelectorAll('#d-compare .compare-card').forEach(c=>c.classList.remove('active'));
-  document.getElementById('compare-'+key).classList.add('active');
-}
-
-/* Biosynthesis flow toggle */
-function showFlow(btn,id){
-  document.querySelectorAll('.toggle-pair button').forEach(b=>{
-    if(b.closest('#d-biosynth')) b.classList.remove('active');
-  });
-  btn.classList.add('active');
-  document.querySelectorAll('#d-biosynth .flow').forEach(f=>f.classList.remove('active'));
-  document.getElementById(id).classList.add('active');
-}
-
-/* Plants table rows */
-function toggleRow(id){
-  document.getElementById(id).classList.toggle('open');
-}
-
-/* ---------- Mini map ---------- */
-const mapData = [
-  {t:"Glycon &amp; Aglycon", d:"Glycon is the sugar part; aglycon (genin) is the non-sugar part. The glycon governs solubility and kinetics, while the aglycon carries the pharmacological activity."},
-  {t:"Alpha vs Beta Forms", d:"Both alpha and beta linkages are chemically possible at the anomeric carbon (C-1), but only the beta configuration occurs naturally in plants."},
-  {t:"Glycoside Stability", d:"Glycosides are hydrolyzed by acids and are stable to alkalis. They are also cleaved by glycosidase enzymes such as emulsin (bitter almond) and myrosine (black mustard), which are normally compartmentalized away from the glycoside until tissue injury releases them."},
-  {t:"Function of Glycosides in Plants", d:"Glycosides serve plants as a means of detoxification, a defense mechanism (antibacterial/antiseptic via the aglycon), a sugar reserve, a source of pigmentation, and a way to store toxic phenolic compounds safely."},
-  {t:"Classification by Linkage", d:"O-glycosides (most common, via alcoholic/phenolic/carboxyl OH), S-glycosides (via sulfur, e.g. sinigrin), N-glycosides (via nitrogen, e.g. adenosine/nucleosides) and C-glycosides (sugar bound directly to carbon, e.g. aloin — resistant to hydrolysis)."},
-  {t:"Cardiac Genin Structure", d:"Cardiac aglycones are steroidal, derivatives of cyclopentaphenanthrene, with an unsaturated lactone ring at C-17 and the sugar always attached at C-3."},
-  {t:"Mechanism of Action", d:"Cardiac glycosides inhibit the Na-K ATPase pump at the membrane level, raising intracellular calcium in the myocardium. This increases inotropy (contraction force) while reducing conduction velocity — useful in congestive heart failure."},
-  {t:"Structural Features of Cardioactive Glycosides", d:"1) β-OH at C-3 carrying the sugar. 2) β-OH at C-14. 3) β-unsaturated 5- or 6-membered lactone at C-17. 4) Ring junctions: A/B usually cis, B/C always trans, C/D always cis. 5) Extra OH groups may appear at C-5, C-11, C-16."},
-  {t:"Cardenolide vs Bufadienolide", d:"Cardenolides (C23) carry a 5-membered lactone ring (e.g. digitoxigenin); bufadienolides (C24) carry a 6-membered lactone ring (e.g. scillarenin)."},
-  {t:"Nomenclature Rules", d:"Name the numbered structure, list functional groups from the lowest number, state alpha/beta configuration, name the glycoside class (cardenolide/bufadienolide) from the lactone, then state the position and number of double bonds (e.g. di-, tri-, tetra-enolide)."},
-  {t:"Biosynthesis of Cardiac Glycosides", d:"Via the acetate-mevalonate pathway: squalene → cholesterol → pregnenolone, which adds a C2 unit to form a cardenolide or a C3 unit to form a bufadienolide."},
-  {t:"Digitalis purpurea", d:"The dried leaf of Digitalis purpurea (foxglove), family Scrophulariaceae, native to temperate Europe. Main glycosides: digitoxin, gitoxin (gitoxigenin) and gitaloxin (gitaloxigenin)."},
-  {t:"Digitalis lanata &amp; Digoxin", d:"D. lanata is highly toxic in all parts, with nearly 70 glycosides detected, including digoxigenin and diginatigenin (absent from D. purpurea) plus lannatosides A/B/C. It is the main source for isolating digoxin, which is absorbed from the GI tract more rapidly than purpurea glycosides — valuable for rapid CHF treatment."},
-  {t:"Nerium oleander &amp; Oleandrin Poisoning", d:"Dried leaves of Nerium oleander (Apocynaceae) contain oleandrin (acetyl derivative of gitoxigenin) and neandrin, both toxic. Poisoning causes GI effects (nausea, salivation, bloody diarrhea), cardiac arrhythmias, and CNS effects (drowsiness, tremors, seizures). Treatment: a single dose of activated charcoal plus supportive care (vitals, fluids/electrolytes)."},
-  {t:"Squill (Bufadienolide)", d:"Squill is the dried inner scales of the white variety of Urginea (Indian squill), family Liliaceae. Main glycoside scillaren A hydrolyzes to scillarenin + rhamnose + glucose; used as an expectorant with cardiotonic/diuretic properties (usual dose 100 mg). The red Urginea maritima variety is used as rat poison and must be excluded from medicinal squill."},
-  {t:"Anthracene Oxidation Levels", d:"Anthraquinone glycosides in medicinal plants occur at different oxidation levels: anthraquinone, anthrone, oxanthrone or anthranol, plus dimeric dianthrone forms in some species."},
-  {t:"Anthraquinone Pharmacological Action", d:"Stimulant laxatives increase colon smooth-muscle tone and stimulate water/electrolyte secretion into the large intestine. Colonic bacterial enzymes hydrolyze the glycosides into active aglycones, producing effect in 8–12 hours. Long-term use causes laxative dependence and loss of normal bowel function; anthranol/anthrone glycosides are more irritant than anthraquinone forms."},
-  {t:"Biosynthesis of Anthraquinones", d:"Shikimic acid forms 1-naphthol, which condenses with IPP (isopentenyl pyrophosphate, from the mevalonate pathway), followed by cyclization to produce the anthraquinone nucleus."},
-  {t:"Senna", d:"Dried leaflets of Cassia acutifolia or Cassia angustifolia (Leguminosae). Main constituents: dimeric glycosides Sennoside A and B (major) and Sennoside C and D (minor), all optical isomers. Used as a cathartic laxative; should not be used more than a week (risk of habitual constipation). Dose: 12–15 mg once daily."},
-  {t:"Cascara Sagrada", d:"Dried bark of Rhamnus purshiana (Rhamnaceae), aged at least one year before use to lose its gripping/emetic principle (per B.P.). Constituents: Cascarosides A/B (R = CH₂OH) and C/D (R = CH₃), each an O- and C-glycoside. Used to treat constipation and restore natural colon tone in habitual constipation."},
-  {t:"Aloe", d:"The dried juice of Aloe perri or Aloe barbadensis (Liliaceae); about 50 species exist with variable constituents. Contains the C-glycoside barbaloin, which yields aloe-emodin. Used as a cathartic laxative, and topically for burns, skin irritation and radiation burns thanks to its pectin/glucomannan content."},
-  {t:"Rhubarb", d:"Dried rhizome and root of Rheum officinale (Polygonaceae). Used as a cathartic laxative with astringent properties. Constituents: chrysophanol, rhein/rhein anthrone, aloe-emodin. Less widely used than senna/cascara due to a stronger gripping effect."}
-];
-const mmList = document.getElementById('mmList');
-mapData.forEach((item,i)=>{
-  const b = document.createElement('button');
-  b.innerHTML = item.t;
-  b.addEventListener('click', ()=>{
-    document.querySelectorAll('#mmList button').forEach(x=>x.classList.remove('active'));
-    b.classList.add('active');
-    document.getElementById('mmTitle').innerHTML = item.t;
-    document.getElementById('mmText').innerHTML = item.d;
-  });
-  mmList.appendChild(b);
-});
-
-/* ---------- Flashcards ---------- */
-const flashData = [
-/* ===== LEVEL 1 — EASY (25) ===== */
-{lvl:1,t:"What is a glycoside?",d:"An organic compound that yields, upon hydrolysis, one or more sugar molecules and a non-sugar moiety."},
-{lvl:1,t:"Glycon vs. Aglycon (genin)",d:"Glycon = the sugar part. Aglycon (genin) = the non-sugar part. They are joined by the glycosidic linkage."},
-{lvl:1,t:"Most frequent sugar & naming by sugar type",d:"β-glucose is the most frequent sugar. According to the sugar type: glucoside (glucose), rhamnoside (rhamnose), fructoside (fructose)."},
-{lvl:1,t:"Chemical nature of glycosides & natural configuration",d:"Chemically they are acetals (sugar ethers); the sugar OH condenses with an OH of the non-sugar part (O-glycoside). Only the beta form occurs naturally in plants."},
-{lvl:1,t:"Stability of glycosides & hydrolyzing enzymes",d:"Hydrolyzed by acids, stable to alkalis. Enzymes (glycosidases) also hydrolyze them: Emulsin in bitter almond seeds and Myrosine in black mustard seeds."},
-{lvl:1,t:"Function of glycon vs. aglycon",d:"Glycon: gives solubility (water soluble, insoluble in organic solvents) and is important for absorption and distribution (kinetics). Aglycon: responsible for pharmacological activity (water insoluble, soluble in organic solvents)."},
-{lvl:1,t:"Functions of glycosides in plant tissue",d:"Detoxification (toxic → less toxic), defense (antibacterial/antiseptic, due to the aglycon), sugar reserve (energy source), pigmentation, and storage of toxins (phenolic compounds)."},
-{lvl:1,t:"Classification by linkage",d:"O-glycoside (alcoholic/phenolic/carboxyl OH; most distributed), S-glycoside (sulfur; sinigrin), N-glycoside (nitrogen; nucleotides/adenosine), C-glycoside (direct carbon; aloin)."},
-{lvl:1,t:"Cardiac genins",d:"Aglycones of cardiac glycosides: steroidal derivatives of cyclopentaphenanthrene with an unsaturated lactone ring at C-17. The sugar is always attached at C-3."},
-{lvl:1,t:"Action & mechanism of cardiac glycosides",d:"Highly specific action on cardiac muscle: increase tone, excitability and contractility. They inhibit Na-K ATPase, raising intracellular calcium in the myocardium: inotropy increases, conduction velocity is reduced."},
-{lvl:1,t:"Clinical use of cardiac glycosides",d:"Congestive heart failure (CHF). Digoxin is nowadays the most widely used drug in CHF."},
-{lvl:1,t:"Cardenolide vs. Bufadienolide",d:"Cardenolide: C23, five-membered lactone ring (e.g. digitoxigenin). Bufadienolide: C24, six-membered lactone ring (e.g. scillarenin)."},
-{lvl:1,t:"Digitalis purpurea (Foxglove)",d:"The dried leaf; family Scrophulariaceae; native to temperate Europe. Digitalis = Latin digitus (finger, finger-shaped corolla); purpurea = purple flower. Constituents: digitoxin, gitoxin (gitoxigenin), gitaloxin (gitaloxigenin)."},
-{lvl:1,t:"Digitalis lanata",d:"Highly toxic in all parts (nearly 70 glycosides). Contains digoxigenin & diginatigenin (not in D. purpurea) and potent lanatosides A/B/C. A good source for isolating digoxin."},
-{lvl:1,t:"Nerium oleander",d:"Dried leaves; family Apocynaceae; used to treat cardiac insufficiency. Main constituents oleandrin (acetyl derivative of gitoxigenin) and neandrin, both responsible for its toxicity."},
-{lvl:1,t:"Oleandrin poisoning: symptoms & treatment",d:"GI: nausea, abdominal pain, vomiting, salivation, bloody diarrhea. Then cardiac (tachy-/bradyarrhythmia) and CNS (drowsiness, tremors, seizures). Treatment: single dose of activated charcoal + supportive care (vitals, electrolyte and fluid balance)."},
-{lvl:1,t:"Squill (Urginea)",d:"Cut & dried fleshy inner scales of the bulb of the white variety (Indian squill), family Liliaceae. Main glycoside scillaren A → scillarenin + rhamnose + glucose. Uses: expectorant (also cardiotonic and diuretic); usual dose 100 mg. Red squill is used as rat poison."},
-{lvl:1,t:"Anthraquinone glycosides — general",d:"Glycosides whose aglycones are anthracene derivatives; they are the active constituents of stimulant (cathartic) laxatives of plant origin. Forms: anthraquinone, anthrone, oxanthrone, anthranol, and dimeric dianthrone."},
-{lvl:1,t:"Role of the sugar in anthraquinone glycosides",d:"Without the sugar, free anthraquinones show little therapeutic activity. The sugar transports the aglycone to the large intestine, where it acts as a stimulant laxative. Effect usually appears in 8–12 hours."},
-{lvl:1,t:"Senna",d:"Dried leaflets of Cassia acutifolia or Cassia angustifolia; family Leguminosae. Main constituents: Sennoside A & B (major), Sennoside C & D (minor), optical isomers. Use: cathartic laxative."},
-{lvl:1,t:"Cascara sagrada",d:"Dried bark of Rhamnus purshiana; family Rhamnaceae. Aged at least one year before use. Treats constipation and colon cleansing (restores natural colon tone). Constituents: Cascarosides A/B/C/D."},
-{lvl:1,t:"Aloe",d:"Dried juice of Aloe perri or Aloe barbadensis; family Liliaceae. Cathartic laxative acting on the large intestine; fresh juice used for burns and skin irritations. Contains the C-glycoside barbaloin."},
-{lvl:1,t:"Rhubarb",d:"Dried rhizomes and root of Rheum officinale; family Polygonaceae. Cathartic laxative with astringent properties. Constituents: chrysophanol, rhein and rhein anthrone, aloe-emodin."},
-{lvl:1,t:"Anthraquinone aglycones & aloins",d:"Aglycones shown: aloe-emodin, rhein, chrysophanol. Aloins (C-glycosides): barbaloin and chrysaloin — both anthrone C-glycosides."},
-{lvl:1,t:"Classification by chemical structure of the aglycon",d:"Cardioactive (sterol), anthraquinone, saponin, cyanophore, isothiocyanate, flavonoid, alcohol, aldehyde, lactone, phenol."},
-
-/* ===== LEVEL 2 — MEDIUM (15) ===== */
-{lvl:2,t:"Why can both α- and β-glycosides form?",d:"Because carbon no. 1 of the sugar residue (the acetal carbon) is asymmetrical (chiral); the result depends on the stereo-configuration of the glycosidic linkage. Only beta forms occur naturally in plants."},
-{lvl:2,t:"The glycon may be any sugar — examples",d:"Mono-, di-, tri- or tetrasaccharide of any type. Glucose → glucoside (sennoside); digitoxose → digitoxoside (digoxin); rhamnose + glucose → rhamnoglucoside (rutin and scillaren A)."},
-{lvl:2,t:"The 5 structural features of all cardioactive glycosides",d:"1) β-OH at C-3 (always in the glycosidic link). 2) β-OH at C-14. 3) α,β-unsaturated 5- or 6-membered lactone at C-17 (beta). 4) A/B usually cis, B/C always trans, C/D always cis. 5) Additional OH groups may be at C-5, C-11, C-16."},
-{lvl:2,t:"What gives cardioactivity and maximal activity?",d:"An α,β-unsaturated lactone at C-17β converts a steroid into a cardio-active drug (absence = inactive). Maximal activity: β-OH at C-14 (very active, rapid action; lack greatly reduces activity), sugar at β-C-3-OH (↑ absorption & distribution), cis-trans-cis junctions (stable nucleus, more active)."},
-{lvl:2,t:"Systematic nomenclature of cardioactive glycosides",d:"1) Number the structure. 2) Arrange functional groups from the least number. 3) Denote α or β. 4) Denote the type (cardenolide/bufadienolide). 5) Denote position & number of double bonds. Two double bonds = dienolide (trienolide > butenolide > pentenolide …)."},
-{lvl:2,t:"Biosynthesis of cardioactive aglycons",d:"Acetate–mevalonate pathway: cholesterol (from squalene) → pregnenolone. Pregnenolone adds a C2 unit → cardenolide, or a C3 unit → bufadienolide."},
-{lvl:2,t:"D. lanata vs. D. purpurea; why digoxin matters",d:"D. lanata (≈70 glycosides) has digoxigenin and diginatigenin, absent from D. purpurea, plus lanatosides A/B/C. Digoxin from D. lanata is absorbed from the GI tract more rapidly than purpurea glycosides — valuable for rapid treatment of CHF."},
-{lvl:2,t:"Oleandrin: identity & anti-cancer potential",d:"Oleandrin = acetyl derivative of gitoxigenin (the one found in D. purpurea). In vitro effect in cancers of colon, lung, leukemia, pancreas, melanoma and prostate; may act as a cytotoxic agent (reactive oxygen species), induce apoptosis, and be synergistic with chemotherapy."},
-{lvl:2,t:"Squill — collection details",d:"Bulbs grow half immersed in sandy soil near the sea; gathered in August; outer membrane scales and central portion removed; fleshy scales cut into pieces and dried. India is now the major producer. Red squill (red Urginea maritima) must not be present in medicinal squill."},
-{lvl:2,t:"Pharmacology of stimulant laxatives (anthraquinones)",d:"↑ tone of colon smooth muscle and stimulate secretion of water and electrolytes into the large intestine. Oral glucosides are hydrolyzed in the colon by microflora enzymes to active aglycones (effect in 8–12 h). Indicated when milder drugs fail and for bowel evacuation before investigations/surgery. Habit forming → dependence and loss of normal bowel function."},
-{lvl:2,t:"Gripping effect: oxidation level & drug choice",d:"Anthranol and anthrone glycosides cause a more irritant, gripping effect than anthraquinone laxatives. Aloe and rhubarb are less widely used than senna and cascara because of their stronger gripping effect."},
-{lvl:2,t:"Sennosides A/B/C/D in detail",d:"Dianthrone O-glycosides. A & B: two identical anthrones (homo-dianthrone, 2 rhein), optical isomers. C & D: different anthrones (rhein + aloe-emodin), optical isomers. The C–C link between the anthrones is resistant to hydrolysis → oxidative hydrolysis with ferric chloride gives free rhein or aloe-emodin."},
-{lvl:2,t:"Senna: dose & duration; cascara: aging",d:"Senna: 12–15 mg tablet once daily (can be divided every 12 h); should not be used more than a week (loss of muscular tone → habitual constipation). Cascara bark: aged ≥ 1 year (B.P.) because fresh bark contains an emetic principle; storage oxidation removes the gripping properties."},
-{lvl:2,t:"Cascarosides A/B vs. C/D",d:"All are disaccharide anthrone glycosides (one O-linked and one C-linked sugar). A/B: R = CH₂OH; C/D: R = CH₃. The difference is due to the stereochemistry of the carbon at the glycosidic linkage."},
-{lvl:2,t:"Aloe: uses, constituents & moisturizing effect",d:"About 50 species (active constituents vary). Uses: cathartic laxative; fresh juice for burns/skin irritations; gel ointment for sunburn, deep thermal and radiation burns; relief of pain, itching and ulceration (preventing malignant change). Barbaloin → aloe-emodin (free or combined). Moisturizing effect: pectin and glucomannan."},
-
-/* ===== LEVEL 3 — HARD (10) ===== */
-{lvl:3,t:"Steroid → cardio-active drug: build the full requirement chain",d:"Essential: α,β-unsaturated lactone at C-17β (without it the compound is inactive as a cardiac drug). For maximal activity add: β-OH at C-14 (potent, rapid), sugar at β-C-3-OH (absorption/distribution; e.g. glucose, rhamnose, digitoxose), and cis-trans-cis A/B, B/C, C/D junctions (very stable → more active)."},
-{lvl:3,t:"Decode: 3β,14β,16β-trihydroxy-4α-methoxy-Card-1,20(22)-dien-olide",d:"Following the nomenclature sequence: OH groups at C-3, C-14, C-16 (all β); methoxy at C-4 (α); 'Card' = cardenolide (C23, five-membered lactone); double bonds at positions 1 and 20(22); 'di-en' = two double bonds; '-olide' = lactone."},
-{lvl:3,t:"From membrane to bedside: the mechanism chain in CHF",d:"Inhibition of Na-K ATPase → ↑ intracellular Ca²⁺ in myocardium and conduction system → inotropy ↑ while conduction velocity ↓. In cardiac insufficiency this means ↑ cardiac output and ↑ work capacity without increased oxygen consumption, plus decreased heart rate."},
-{lvl:3,t:"Different aglycons, different pathways",d:"Cardiac aglycons: acetate–mevalonate pathway → squalene/cholesterol → pregnenolone (+C2 cardenolide / +C3 bufadienolide). Anthraquinones: shikimic acid → 1-naphthol, which condenses with IPP (isopentenyl pyrophosphate, from the mevalonic acid pathway) → cyclization → anthraquinone nucleus."},
-{lvl:3,t:"Why is the sugar indispensable in anthraquinone laxatives?",d:"Free anthraquinones have little therapeutic activity. The sugar transports the aglycone to the site of action in the large intestine; there, microflora enzymes hydrolyze the glycoside to the active aglycone, producing the effect in 8–12 h. (Contrast: in cardiac glycosides the glycon mainly modifies solubility/kinetics while the aglycon carries the activity.)"},
-{lvl:3,t:"Sennosides vs. Cascarosides: why different hydrolysis?",d:"Sennosides are dimeric dianthrone O-glycosides joined by a resistant C–C bond → oxidative hydrolysis with FeCl₃ is needed to release rhein/aloe-emodin. Cascarosides are disaccharide anthrone glycosides with one O- and one C-linked sugar: the O-glucose hydrolyzes, but the remaining C-glycoside is difficult to cleave and also needs oxidative hydrolysis."},
-{lvl:3,t:"Cascaroside degradation routes",d:"Cascaroside A/B (R = CH₂OH): hydrolysis of O-glucose → barbaloin (C-glycoside, difficult to cleave) → oxidative hydrolysis → aloe-emodin. Cascaroside C/D (R = CH₃): hydrolysis of O-glucose → chrysaloin (C-glycoside) → oxidative hydrolysis → chrysophanol. Pattern: whole glycoside → C-glycoside → free anthraquinone."},
-{lvl:3,t:"Oxidation levels, interconversion & clinical meaning",d:"Anthracene derivatives occur as anthraquinone, anthrone, oxanthrone, anthranol, and dimeric dianthrone (e.g. emodin dianthrone); the group members are inter-changeable by oxidation or reduction. Anthranol/anthrone glycosides are more irritant/gripping than anthraquinones; all stimulant laxatives are habit forming, so long-term use risks dependence and loss of normal bowel function."},
-{lvl:3,t:"Oleandrin: toxicity profile & rational management",d:"Oleandrin (acetyl gitoxigenin) + neandrin cause toxicity: GI effects first (nausea, vomiting, salivation, bloody diarrhea), then tachy-/bradyarrhythmia, then CNS (drowsiness, tremors, seizures). Single-dose activated charcoal binds toxin left in the GI tract; supportive care monitors vitals, electrolytes and fluids because patients may be hypovolemic from diarrhea and vomiting."},
-{lvl:3,t:"Bufadienolide squill vs. cardenolide Digitalis — full contrast",d:"Digitalis (Scrophulariaceae; leaf): cardenolides (C23, 5-membered lactone, e.g. digitoxigenin) — digitoxin, gitoxin, gitaloxin, digoxin (rapid CHF use). Squill (Liliaceae; white Urginea bulb scales): bufadienolide (C24, 6-membered lactone, e.g. scillarenin); scillaren A → scillarenin + rhamnose + glucose; expectorant with cardiotonic/diuretic effects, dose 100 mg; red squill = rat poison."}
-];
-let fcLevel = 1;
-let fcOrder = [];
-function currentFlashList(){
-  return flashData.filter(f=>f.lvl===fcLevel);
-}
-function resetFcOrder(){
-  const list = currentFlashList();
-  fcOrder = list.map((_,i)=>i);
-}
-resetFcOrder();
-function renderFlashcards(){
-  const list = currentFlashList();
-  const grid = document.getElementById('fcGrid');
-  grid.innerHTML = '';
-  fcOrder.forEach(i=>{
-    const item = list[i];
-    const card = document.createElement('div');
-    card.className='fc';
-    card.innerHTML = `<div class="fc-inner">
-        <div class="fc-face fc-front">${item.t}</div>
-        <div class="fc-face fc-back">${item.d}</div>
-      </div>`;
-    card.addEventListener('click', ()=>card.classList.toggle('flipped'));
-    grid.appendChild(card);
-  });
-  document.getElementById('fcCount').textContent = list.length + ' cards';
-}
-function shuffleFlashcards(){
-  for(let i=fcOrder.length-1;i>0;i--){
-    const j=Math.floor(Math.random()*(i+1));
-    [fcOrder[i],fcOrder[j]]=[fcOrder[j],fcOrder[i]];
-  }
-  renderFlashcards();
-}
-document.querySelectorAll('#fc-chips .chip').forEach(chip=>{
-  chip.addEventListener('click', ()=>{
-    document.querySelectorAll('#fc-chips .chip').forEach(c=>c.classList.remove('active'));
-    chip.classList.add('active');
-    fcLevel = parseInt(chip.dataset.lvl, 10);
-    resetFcOrder();
-    renderFlashcards();
-  });
-});
-renderFlashcards();
-
-/* ---------- Quiz ---------- */
-/* index 0 in each options array is always the authored-correct answer; shuffled at render time */
-const quizData = [
-/* ===== LEVEL 1 — EASY (25) ===== */
-{lvl:1,q:"In a glycoside, the sugar part is called the:", options:["Glycon","Aglycon","Genin","Lactone"]},
-{lvl:1,q:"The most frequently occurring sugar in glycosides is:", options:["β-glucose","Rhamnose","Fructose","Digitoxose"]},
-{lvl:1,q:"Which glycosidic configuration occurs naturally in plants?", options:["Only the beta form","Only the alpha form","Both alpha and beta equally","Neither; they are all synthetic"]},
-{lvl:1,q:"Glycosides are usually hydrolyzed by ______ and are stable to ______.", options:["acids / alkalis","alkalis / acids","water / acids","alcohol / alkalis"]},
-{lvl:1,q:"Which enzyme–source pair is correct?", options:["Emulsin – bitter almond seeds; Myrosine – black mustard seeds","Emulsin – black mustard seeds; Myrosine – bitter almond seeds","Emulsin – Digitalis leaves; Myrosine – squill bulbs","Emulsin – senna leaflets; Myrosine – aloe juice"]},
-{lvl:1,q:"The part of a glycoside responsible for its pharmacological activity is the:", options:["Aglycon","Glycon","Glycosidic oxygen only","Sugar reserve"]},
-{lvl:1,q:"The glycon part is important for:", options:["Solubility, absorption and distribution (kinetics)","Pharmacological activity only","Insolubility in water","Conversion to an alkali-labile compound"]},
-{lvl:1,q:"Which of the following is NOT listed as a function of glycosides in plant tissue?", options:["Production of chlorophyll","Detoxification","Defense mechanism","Pigmentation"]},
-{lvl:1,q:"Sinigrin (S-glycoside), adenosine (N-glycoside) and aloin (C-glycoside) differ in that the sugar is linked to:", options:["Sulfur, nitrogen and carbon respectively","Nitrogen, sulfur and carbon respectively","Carbon, nitrogen and sulfur respectively","Oxygen in all three"]},
-{lvl:1,q:"The aglycones of cardiac glycosides are referred to as:", options:["Cardiac genins","Cardiac glycons","Anthrones","Cascarosides"]},
-{lvl:1,q:"In cardiac aglycones the sugar is always attached at position:", options:["C-3","C-14","C-17","C-5"]},
-{lvl:1,q:"The unsaturated lactone ring of cardiac aglycones is located at:", options:["C-17","C-3","C-11","C-16"]},
-{lvl:1,q:"Cardiac glycosides act by inhibiting:", options:["Na-K ATPase","Glycosidases","Emulsin","Myrosine"]},
-{lvl:1,q:"Which drug is nowadays the most widely used in congestive heart failure (CHF)?", options:["Digoxin","Oleandrin","Scillaren A","Sennoside A"]},
-{lvl:1,q:"A cardenolide is characterized by:", options:["C23 and a five-membered lactone ring","C24 and a six-membered lactone ring","C23 and a six-membered lactone ring","C24 and a five-membered lactone ring"]},
-{lvl:1,q:"Digitalis purpurea (foxglove) belongs to the family:", options:["Scrophulariaceae","Apocynaceae","Liliaceae","Rhamnaceae"]},
-{lvl:1,q:"The plant used as the good source for isolating digoxin is:", options:["Digitalis lanata","Digitalis purpurea","Nerium oleander","Urginea maritima"]},
-{lvl:1,q:"Oleandrin is the main toxic constituent of:", options:["Nerium oleander","Digitalis purpurea","Rheum officinale","Cassia angustifolia"]},
-{lvl:1,q:"In oleandrin poisoning, the drug given as a single dose to bind toxin left in the GI tract is:", options:["Activated charcoal","Digoxin","Ferric chloride","Senna"]},
-{lvl:1,q:"Scillaren A, whose hydrolysis yields scillarenin, rhamnose and glucose, is the main glycoside of:", options:["Squill (white Urginea)","Digitalis lanata","Aloe barbadensis","Rhamnus purshiana"]},
-{lvl:1,q:"Anthraquinone glycosides are used therapeutically as:", options:["Stimulant (cathartic) laxatives","Cardiotonics for CHF","Expectorants","Rat poisons"]},
-{lvl:1,q:"The main (major) constituents of senna are:", options:["Sennoside A and B","Sennoside C and D","Barbaloin and chrysaloin","Digitoxin and gitoxin"]},
-{lvl:1,q:"The dried bark of Rhamnus purshiana (family Rhamnaceae) is:", options:["Cascara sagrada","Senna","Rhubarb","Squill"]},
-{lvl:1,q:"Aloe is defined as the dried juice of Aloe perri or Aloe barbadensis, family:", options:["Liliaceae","Leguminosae","Polygonaceae","Scrophulariaceae"]},
-{lvl:1,q:"Rhubarb (Rheum officinale) is used as a cathartic laxative and also has ______ properties.", options:["astringent","expectorant","cardiotonic","rat-poison"]},
-
-/* ===== LEVEL 2 — MEDIUM (15) ===== */
-{lvl:2,q:"Both alpha and beta glycosides are possible because carbon no. 1 of the sugar residue is:", options:["An asymmetrical (chiral) acetal carbon","A symmetrical carbon bearing two identical groups","A sulfur atom","Part of the aglycon only"]},
-{lvl:2,q:"Rutin and scillaren A are described as rhamnoglucosides because their glycon part is:", options:["Rhamnose and glucose","Digitoxose only","Fructose only","Glucose only (like sennoside)"]},
-{lvl:2,q:"Which set lists the first three structural features of all cardioactive glycosides?", options:["β-OH at C-3 (glycosidic), β-OH at C-14, unsaturated 5- or 6-membered lactone at C-17β","α-OH at C-3, α-OH at C-14, saturated lactone at C-17α","β-OH at C-5, β-OH at C-11, aldehyde at C-17","Sugar at C-17, lactone at C-3, β-OH at C-16"]},
-{lvl:2,q:"The ring-junction pattern of the cyclopentaphenanthrene nucleus in cardiac glycosides is:", options:["A/B usually cis, B/C always trans, C/D always cis","A/B always trans, B/C usually cis, C/D always trans","A/B, B/C and C/D all trans","A/B always cis, B/C always cis, C/D always trans"]},
-{lvl:2,q:"What is the effect of lacking the β-OH group at C-14?", options:["The activity is greatly reduced","The glycoside becomes more rapid in action","Absorption through C-3 increases","The compound becomes an anthraquinone"]},
-{lvl:2,q:"A steroidal compound that lacks the α,β-unsaturated lactone ring at C-17β will be:", options:["Inactive as a cardio-active drug","A very active cardiac drug","A bufadienolide","A stimulant laxative"]},
-{lvl:2,q:"In the systematic nomenclature of cardioactive glycosides, after numbering the structure and arranging the functional groups from the least number, the next step is to:", options:["Denote whether alpha or beta","Denote the position and number of double bonds","Name the plant source","Denote the family of the plant"]},
-{lvl:2,q:"Pregnenolone adding a C3 unit leads to the formation of a:", options:["Bufadienolide","Cardenolide","Dianthrone","Anthrone"]},
-{lvl:2,q:"Digoxin from D. lanata is valuable for rapid treatment of CHF because it is:", options:["More rapidly absorbed from the GI tract than purpurea glycosides","Absorbed more slowly than purpurea glycosides","Absent from D. lanata","Free of toxicity in all doses"]},
-{lvl:2,q:"Oleandrin is chemically best described as the:", options:["Acetyl derivative of gitoxigenin","Methyl derivative of digoxigenin","Glucoside of scillarenin","Dimer of rhein anthrone"]},
-{lvl:2,q:"Which statement about squill is correct?", options:["The red variety (Urginea maritima) is used as rat poison and must not be present in medicinal squill","Red squill is the official medicinal variety","Squill is the dried leaf of a plant of family Rhamnaceae","China is the major producer of squill"]},
-{lvl:2,q:"After oral administration, anthraquinone glucosides produce their effect in 8–12 hours because they must first be:", options:["Hydrolyzed in the colon by enzymes of the microflora to active aglycones","Hydrolyzed in the stomach by alkali","Absorbed unchanged and excreted in bile","Converted into cardiac genins in the liver"]},
-{lvl:2,q:"Sennosides A and B are best described as:", options:["Homodianthrones of two identical rhein units that are optical isomers","Heterodianthrones of rhein and aloe-emodin","Monomeric C-glycosides of chrysophanol","Bufadienolide glycosides"]},
-{lvl:2,q:"Cascara bark must be aged at least one year (B.P.) because fresh bark:", options:["Contains an emetic principle","Contains no glycosides","Is too astringent","Is a source of digoxin"]},
-{lvl:2,q:"Aloe and rhubarb are less widely used than senna and cascara because they have:", options:["A stronger gripping effect","No laxative effect","A weaker laxative effect only","Cardiac toxicity"]},
-
-/* ===== LEVEL 3 — HARD (10) ===== */
-{lvl:3,q:"A steroidal glycoside shows maximal cardiac activity. Which combination of features, as taught, best explains it?", options:["α,β-unsaturated C-17β lactone, β-OH at C-14, sugar at β-C-3-OH, and cis-trans-cis ring junctions","Saturated lactone at C-17, α-OH at C-14, sugar at C-17, and all-trans ring junctions","β-OH at C-14 alone, since the lactone ring and sugar are optional","Sugar at C-3 alone, with no lactone ring"]},
-{lvl:3,q:"The compound named 3β,14β,16β-trihydroxy-4α-methoxy-Card-1,20(22)-dien-olide has:", options:["OH at C-3, C-14, C-16 (β); methoxy at C-4 (α); a C23 cardenolide skeleton; two double bonds at 1 and 20(22)","OH at C-3, C-14, C-16 (α); methoxy at C-4 (β); a C24 bufadienolide skeleton; three double bonds","OH at C-1 and C-20; methoxy at C-3; a C23 skeleton with one double bond","OH at C-4 only; methoxy at C-3, C-14 and C-16; an anthrone skeleton"]},
-{lvl:3,q:"Which sequence correctly links the mechanism of cardiac glycosides to their effect in CHF?", options:["Na-K ATPase inhibition → ↑ intracellular Ca²⁺ → ↑ inotropy, ↓ conduction velocity → ↑ cardiac output and work capacity without ↑ O₂ consumption, ↓ heart rate","Na-K ATPase activation → ↓ intracellular Ca²⁺ → ↓ inotropy → ↓ cardiac output","Na-K ATPase inhibition → ↓ intracellular Ca²⁺ → ↑ conduction velocity → ↑ O₂ consumption","Glycosidase inhibition → ↑ intracellular Na⁺ only → ↑ heart rate and ↑ O₂ consumption"]},
-{lvl:3,q:"Which statement correctly contrasts the biosynthesis of cardiac aglycons with that of anthraquinones?", options:["Cardiac: acetate–mevalonate → cholesterol → pregnenolone (+C2/+C3); anthraquinones: shikimic acid → 1-naphthol + IPP → cyclization","Cardiac: shikimic acid → 1-naphthol + IPP; anthraquinones: acetate–mevalonate → cholesterol → pregnenolone","Both are formed only from shikimic acid and 1-naphthol","Both are formed from pregnenolone by adding a C2 or C3 unit"]},
-{lvl:3,q:"Free anthraquinones show little therapeutic activity, yet the glycoside is the effective laxative form. The best explanation is:", options:["The sugar transports the aglycone to the large intestine, where colonic microflora hydrolyze it to the active aglycone","The sugar makes the aglycone insoluble so it stays in the stomach","The sugar is the pharmacologically active part that stimulates the colon","The aglycone is activated by gastric acid before reaching the colon"]},
-{lvl:3,q:"Why do sennosides and cascarosides both need oxidative hydrolysis (e.g. FeCl₃) to release free anthraquinones?", options:["Sennosides have a resistant C–C link between two anthrones; cascarosides leave a C-glycoside (barbaloin/chrysaloin) after the O-glucose is lost","Both contain only easily cleaved O-glycosidic bonds","Sennosides contain S-glycosidic bonds; cascarosides contain N-glycosidic bonds","Both are monomeric anthraquinones with no sugar"]},
-{lvl:3,q:"Which pairing of cascaroside degradation routes is correct?", options:["Cascaroside A/B → barbaloin → aloe-emodin; Cascaroside C/D → chrysaloin → chrysophanol","Cascaroside A/B → chrysaloin → chrysophanol; Cascaroside C/D → barbaloin → aloe-emodin","Cascaroside A/B → barbaloin → rhein; Cascaroside C/D → chrysaloin → aloe-emodin","Cascaroside A/B and C/D both → sennoside A → rhein"]},
-{lvl:3,q:"Which statement about the anthracene derivatives and their laxative profile is correct?", options:["Anthraquinone, anthrone, oxanthrone, anthranol and dianthrone are inter-changeable by oxidation/reduction; anthranol/anthrone glycosides are more irritant; long-term use causes dependence","Only anthraquinones exist; they cannot be reduced or oxidized, and are the most irritant","Anthrone and anthranol glycosides are less irritant than anthraquinones; long-term use is harmless","Dianthrones are monomeric and are absorbed in the stomach, with no risk of dependence"]},
-{lvl:3,q:"A patient presents after ingesting oleander leaves with vomiting, bloody diarrhea, arrhythmia and tremors. The best management as taught is:", options:["A single dose of activated charcoal plus supportive care, monitoring vitals, electrolytes and fluids (possible hypovolemia)","Digoxin to correct the arrhythmia, since oleandrin is a cardiac glycoside","Senna to remove the toxin from the colon","Ferric chloride to hydrolyze oleandrin in the gut"]},
-{lvl:3,q:"Which comparison of Digitalis and squill is correct?", options:["Digitalis (Scrophulariaceae, leaf) gives cardenolides (C23, five-membered lactone); squill (Liliaceae, white Urginea bulb scales) gives a bufadienolide (C24, six-membered lactone) from scillaren A","Digitalis gives bufadienolides (C24); squill gives cardenolides (C23) from digitoxin","Both are Liliaceae and both contain only bufadienolides","Digitalis is a bark drug of Rhamnaceae; squill is a leaf drug of Apocynaceae"]}
-];
-
-let qzLevel = 1;
-function currentQuizList(){
-  const arr = quizData.filter(q=>q.lvl===qzLevel);
-  for(let i=arr.length-1;i>0;i--){
-    const j=Math.floor(Math.random()*(i+1));
-    [arr[i],arr[j]]=[arr[j],arr[i]];
-  }
-  return arr;
-}
-
-let score = 0, answered = 0;
-function shuffleArrWithCorrect(opts){
-  const arr = opts.map((text,i)=>({text, correct:i===0}));
-  for(let i=arr.length-1;i>0;i--){
-    const j=Math.floor(Math.random()*(i+1));
-    [arr[i],arr[j]]=[arr[j],arr[i]];
-  }
-  return arr;
-}
-function buildQuiz(){
-  score=0; answered=0;
-  const quizList = currentQuizList();
-  document.getElementById('quizScore').textContent = 0;
-  document.getElementById('quizTotal').textContent = quizList.length;
-  const list = document.getElementById('quizList');
-  list.innerHTML='';
-  quizList.forEach((item,qi)=>{
-    const opts = shuffleArrWithCorrect(item.options);
-    const card = document.createElement('div');
-    card.className='q-card';
-    card.innerHTML = `<div class="q-num">Question ${qi+1} of ${quizList.length}</div>
-      <div class="q-text">${item.q}</div>
-      <div class="q-opts"></div>`;
-    const optWrap = card.querySelector('.q-opts');
-    opts.forEach(o=>{
-      const b = document.createElement('button');
-      b.className='q-opt';
-      b.textContent = o.text;
-      b.addEventListener('click', ()=>{
-        const allBtns = optWrap.querySelectorAll('.q-opt');
-        allBtns.forEach(x=>x.disabled=true);
-        if(o.correct){
-          b.classList.add('correct');
-          score++;
-        } else {
-          b.classList.add('wrong');
-          allBtns.forEach(x=>{ if(x.textContent===item.options[0]) x.classList.add('correct'); });
-        }
-        answered++;
-        document.getElementById('quizScore').textContent = score;
-      });
-      optWrap.appendChild(b);
-    });
-    list.appendChild(card);
-  });
-}
-document.querySelectorAll('#qz-chips .chip').forEach(chip=>{
-  chip.addEventListener('click', ()=>{
-    document.querySelectorAll('#qz-chips .chip').forEach(c=>c.classList.remove('active'));
-    chip.classList.add('active');
-    qzLevel = parseInt(chip.dataset.lvl, 10);
-    buildQuiz();
-  });
-});
-buildQuiz();
-</script>
-</body>
-</html>
+LEVEL 1 — EASY
+
+35 MCQs
+
+1.
+
+Glycosides yield upon hydrolysis:
+
+A. Only sugars
+B. Only aglycones
+C. One or more sugar molecules and a non-sugar moiety
+D. Proteins and amino acids
+
+Answer: C
+
+2.
+
+The sugar part of a glycoside is called:
+
+A. Aglycon
+B. Genin
+C. Glycon
+D. Lactone
+
+Answer: C
+
+3.
+
+The non-sugar part of a glycoside is called:
+
+A. Glycon
+B. Aglycon
+C. Glycose
+D. Saccharide
+
+Answer: B
+
+4.
+
+The most frequently occurring sugar in glycosides is:
+
+A. Fructose
+B. Rhamnose
+C. β-Glucose
+D. Digitoxose
+
+Answer: C
+
+5.
+
+A glycoside containing rhamnose is called a:
+
+A. Glucoside
+B. Fructoside
+C. Rhamnoside
+D. Digitoxoside
+
+Answer: C
+
+6.
+
+The glycon component may be:
+
+A. Only a monosaccharide
+B. Mono-, di-, tri-, or tetrasaccharide
+C. Only a disaccharide
+D. Only a trisaccharide
+
+Answer: B
+
+7.
+
+Digitoxose forms a:
+
+A. Glucoside
+B. Digitoxoside
+C. Rhamnoside
+D. Fructoside
+
+Answer: B
+
+8.
+
+Glycosides are chemically considered:
+
+A. Esters
+B. Amides
+C. Acetals
+D. Ketones
+
+Answer: C
+
+9.
+
+O-glycosides are named according to linkage through:
+
+A. Nitrogen
+B. Sulfur
+C. Carbon
+D. Oxygen
+
+Answer: D
+
+10.
+
+The two possible orientations of glycosides are:
+
+A. Cis and trans
+B. Alpha and beta
+C. D and L
+D. R and S
+
+Answer: B
+
+11.
+
+Which form of glycoside occurs naturally in plants according to the lecture?
+
+A. Alpha only
+B. Beta only
+C. Both equally
+D. Neither
+
+Answer: B
+
+12.
+
+Glycosides are usually hydrolyzed by:
+
+A. Acids
+B. Alkalis only
+C. Oils
+D. Proteins
+
+Answer: A
+
+13.
+
+Enzymes that hydrolyze many glycosides are called:
+
+A. Oxidases
+B. Glycosidases
+C. Kinases
+D. Lipases
+
+Answer: B
+
+14.
+
+Emulsin occurs in:
+
+A. Black mustard seeds
+B. Bitter almond seeds
+C. Digitalis leaves
+D. Senna leaves
+
+Answer: B
+
+15.
+
+Myrosine occurs in:
+
+A. Bitter almond seeds
+B. Black mustard seeds
+C. Aloe juice
+D. Rhubarb roots
+
+Answer: B
+
+16.
+
+The glycon mainly contributes to:
+
+A. Pharmacological activity
+B. Solubility and absorption/distribution
+C. Toxicity only
+D. Lactone formation
+
+Answer: B
+
+17.
+
+The aglycon is mainly responsible for:
+
+A. Water solubility
+B. Pharmacological activity
+C. Sugar storage
+D. Pigmentation only
+
+Answer: B
+
+18.
+
+The glycon is generally:
+
+A. Water-insoluble
+B. Water-soluble
+C. Soluble only in organic solvents
+D. Insoluble in all solvents
+
+Answer: B
+
+19.
+
+A C-glycoside has the sugar directly attached to:
+
+A. Oxygen
+B. Sulfur
+C. Nitrogen
+D. Carbon
+
+Answer: D
+
+20.
+
+Aloins are examples of:
+
+A. N-glycosides
+B. S-glycosides
+C. C-glycosides
+D. O-glycosides
+
+Answer: C
+
+21.
+
+Sinigrin is an example of:
+
+A. O-glycoside
+B. S-glycoside
+C. N-glycoside
+D. C-glycoside
+
+Answer: B
+
+22.
+
+Cardiac glycosides specifically act on:
+
+A. Liver
+B. Kidney
+C. Cardiac muscle
+D. Skin
+
+Answer: C
+
+23.
+
+The aglycones of cardiac glycosides are called:
+
+A. Anthrones
+B. Cardiac genins
+C. Sennosides
+D. Cascarosides
+
+Answer: B
+
+24.
+
+The steroidal nucleus of cardiac glycosides contains an unsaturated lactone ring at:
+
+A. C3
+B. C5
+C. C14
+D. C17
+
+Answer: D
+
+25.
+
+Cardiac glycosides inhibit:
+
+A. Na-K ATPase
+B. DNA polymerase
+C. Pepsin
+D. Lipase
+
+Answer: A
+
+26.
+
+The cardiac glycoside described as the most widely used drug in CHF is:
+
+A. Digitoxin
+B. Digoxin
+C. Oleandrin
+D. Scillaren A
+
+Answer: B
+
+27.
+
+Cardiac glycosides contain a β-OH group at:
+
+A. C3
+B. C7
+C. C10
+D. C20
+
+Answer: A
+
+28.
+
+Another characteristic β-OH group of cardioactive glycosides occurs at:
+
+A. C5
+B. C11
+C. C14
+D. C17
+
+Answer: C
+
+29.
+
+Cardenolides contain a:
+
+A. Six-membered lactone
+B. Five-membered lactone
+C. Seven-membered lactone
+D. Four-membered lactone
+
+Answer: B
+
+30.
+
+Bufadienolides contain a:
+
+A. Five-membered lactone
+B. Six-membered lactone
+C. Four-membered lactone
+D. Three-membered lactone
+
+Answer: B
+
+31.
+
+Digitalis purpurea belongs to the family:
+
+A. Liliaceae
+B. Rhamnaceae
+C. Scrophulariaceae
+D. Polygonaceae
+
+Answer: C
+
+32.
+
+The main glycoside of Squill is:
+
+A. Sennoside A
+B. Scillaren A
+C. Barbaloin
+D. Cascaroside A
+
+Answer: B
+
+33.
+
+Senna is mainly used as a:
+
+A. Cardiotonic
+B. Cathartic laxative
+C. Diuretic only
+D. Antiseptic
+
+Answer: B
+
+34.
+
+Aloe contains the C-glycoside:
+
+A. Barbaloin
+B. Scillaren A
+C. Digoxin
+D. Oleandrin
+
+Answer: A
+
+35.
+
+Rhubarb contains:
+
+A. Chrysophanol, rhein/rhein anthrone and aloe-emodin
+B. Digoxin and digitoxin
+C. Oleandrin and neandrin
+D. Scillaren A and scillarenin
+
+Answer: A
+
+⸻
+
+LEVEL 1 — 35 FLASHCARDS
+
+1.
+
+Q: What are glycosides?
+A: Organic compounds that yield one or more sugar molecules and a non-sugar moiety upon hydrolysis.
+
+2.
+
+Q: What is the sugar portion called?
+A: Glycon.
+
+3.
+
+Q: What is the non-sugar portion called?
+A: Aglycon or genin.
+
+4.
+
+Q: What is the most frequent sugar in glycosides?
+A: β-Glucose.
+
+5.
+
+Q: What sugars besides glucose may occur?
+A: Rhamnose and fructose.
+
+6.
+
+Q: What is the name for a glycoside containing glucose?
+A: Glucoside.
+
+7.
+
+Q: What is the name for a glycoside containing rhamnose?
+A: Rhamnoside.
+
+8.
+
+Q: What is the name for a glycoside containing fructose?
+A: Fructoside.
+
+9.
+
+Q: What forms can the glycon component have?
+A: Mono-, di-, tri-, or tetrasaccharide.
+
+10.
+
+Q: What are glycosides chemically?
+A: Acetals.
+
+11.
+
+Q: What is an O-glycoside?
+A: A glycoside linked through an oxygen atom.
+
+12.
+
+Q: What two orientations are possible for glycosidic linkage?
+A: Alpha and beta.
+
+13.
+
+Q: Which form occurs naturally in plants?
+A: Beta.
+
+14.
+
+Q: What generally hydrolyzes glycosides?
+A: Acids and glycosidase enzymes.
+
+15.
+
+Q: What are glycosidases?
+A: Enzymes that hydrolyze many glycosides.
+
+16.
+
+Q: Where is Emulsin found?
+A: Bitter almond seeds.
+
+17.
+
+Q: Where is Myrosine found?
+A: Black mustard seeds.
+
+18.
+
+Q: What does the glycon mainly provide?
+A: Solubility properties important in absorption and distribution.
+
+19.
+
+Q: What is mainly responsible for pharmacological activity?
+A: The aglycon.
+
+20.
+
+Q: What is the general solubility of glycon?
+A: Water-soluble and insoluble in organic solvents.
+
+21.
+
+Q: What is the general solubility of aglycon?
+A: Water-insoluble and soluble in organic solvents.
+
+22.
+
+Q: Give two functions of glycosides in plants.
+A: Detoxification and defense.
+
+23.
+
+Q: What is an S-glycoside?
+A: A glycoside in which sugar is attached to sulfur.
+
+24.
+
+Q: What is an N-glycoside?
+A: A glycoside in which sugar is linked to nitrogen.
+
+25.
+
+Q: What is a C-glycoside?
+A: A glycoside in which sugar is directly attached to carbon.
+
+26.
+
+Q: Give an example of a C-glycoside.
+A: Aloin.
+
+27.
+
+Q: What do cardiac glycosides increase?
+A: Cardiac tone, excitability and contractility.
+
+28.
+
+Q: What enzyme do cardiac glycosides inhibit?
+A: Na-K ATPase.
+
+29.
+
+Q: What happens to intracellular calcium after Na-K ATPase inhibition?
+A: It increases.
+
+30.
+
+Q: What is the lactone-ring position in cardiac glycosides?
+A: C17.
+
+31.
+
+Q: What are cardenolides?
+A: Cardioactive genins containing a five-membered lactone ring at C17.
+
+32.
+
+Q: What are bufadienolides?
+A: Cardioactive genins containing a six-membered lactone ring at C17.
+
+33.
+
+Q: What is the main glycoside of Squill?
+A: Scillaren A.
+
+34.
+
+Q: What are the major sennosides?
+A: Sennoside A and B.
+
+35.
+
+Q: What is the main C-glycoside of Aloe?
+A: Barbaloin.
+
+⸻
+
+LEVEL 2 — MEDIUM
+
+25 MCQs
+
+36.
+
+A glycoside contains rhamnose and glucose as its sugar components. According to the lecture, it can be described as a:
+
+A. Fructoside
+B. Rhamnoglucoside
+C. Digitoxoside
+D. Monoglucoside
+
+Answer: B
+
+37.
+
+A compound has a sugar linked to the sulfur atom of its aglycon. Its classification is:
+
+A. O-glycoside
+B. N-glycoside
+C. S-glycoside
+D. C-glycoside
+
+Answer: C
+
+38.
+
+If the sugar component is removed from a typical glycoside, which property would be most directly reduced according to the lecture?
+
+A. Solubility in water
+B. Steroidal nature
+C. Lactone-ring size
+D. Carbon numbering
+
+Answer: A
+
+39.
+
+Why can injury or improper extraction promote glycoside hydrolysis in plant material?
+
+A. They convert glycon into cholesterol
+B. They can release plant enzymes capable of hydrolyzing glycosides
+C. They remove all aglycones
+D. They convert O-glycosides into N-glycosides
+
+Answer: B
+
+40.
+
+Which combination correctly matches the enzyme with its plant source?
+
+A. Emulsin—black mustard; Myrosine—bitter almond
+B. Emulsin—bitter almond; Myrosine—black mustard
+C. Both—Digitalis
+D. Both—Senna
+
+Answer: B
+
+41.
+
+Which structural combination best characterizes cardioactive glycosides?
+
+A. β-OH at C3 + β-OH at C14 + β-unsaturated lactone at C17
+B. OH at C1 + lactone at C3
+C. Sugar at C17 + lactone at C3
+D. β-OH only at C5
+
+Answer: A
+
+42.
+
+The characteristic ring junction arrangement of the cyclopentaphenanthrene nucleus is:
+
+A. Trans-trans-trans
+B. Cis-cis-trans
+C. Cis-trans-cis
+D. Trans-cis-trans
+
+Answer: C
+
+43.
+
+Which structural feature is specifically associated with maximal cardiac activity according to the lecture?
+
+A. Absence of the C14 hydroxyl group
+B. β-hydroxyl group at C14
+C. Removal of the C3 sugar
+D. Saturated lactone at C17
+
+Answer: B
+
+44.
+
+Removal of the α,β-unsaturated lactone ring at C17 would:
+
+A. Increase cardiac activity
+B. Inactivate the steroidal compound as a cardioactive drug
+C. Convert it into a C-glycoside
+D. Make it a sennoside
+
+Answer: B
+
+45.
+
+The sugar attached to β-C3-OH of a cardiac aglycon mainly contributes to:
+
+A. Increasing absorption and distribution
+B. Forming the lactone ring
+C. Removing the steroidal nucleus
+D. Preventing glycosidic linkage
+
+Answer: A
+
+46.
+
+A cardioactive glycoside has a six-membered lactone ring at C17. It belongs to the:
+
+A. Cardenolides
+B. Bufadienolides
+C. Anthraquinones
+D. Dianthrones
+
+Answer: B
+
+47.
+
+According to the biosynthetic pathway, pregnenolone forms:
+
+A. Cardenolide by adding C2 and bufadienolide by adding C3
+B. Cardenolide by adding C3 and bufadienolide by adding C2
+C. Both by adding C1
+D. Both directly from glucose
+
+Answer: A
+
+48.
+
+Which pair is associated specifically with Digitalis lanata rather than Digitalis purpurea?
+
+A. Digitoxin and gitoxin
+B. Digoxigenin and diginatigenin
+C. Sennoside A and B
+D. Barbaloin and chrysaloin
+
+Answer: B
+
+49.
+
+Why is Digoxin from Digitalis lanata valuable for rapid CHF treatment?
+
+A. It is less absorbed from the GI tract
+B. It is more rapidly absorbed from the GI tract
+C. It is not a cardiac glycoside
+D. It acts only in the colon
+
+Answer: B
+
+50.
+
+Which statement correctly connects oleandrin with Nerium oleander?
+
+A. It is an anthraquinone glycoside
+B. It is the main constituent and is associated with toxicity
+C. It is the main glycoside of Senna
+D. It is a C-glycoside of Aloe
+
+Answer: B
+
+51.
+
+A patient with oleandrin poisoning develops diarrhea and vomiting. According to the lecture, supportive care should particularly consider:
+
+A. Fluid and electrolyte balance
+B. Increasing dietary sugar
+C. Avoiding vital-sign monitoring
+D. Removing all carbohydrates
+
+Answer: A
+
+52.
+
+Why is activated charcoal considered in oleandrin poisoning?
+
+A. It produces oleandrin
+B. It binds toxin remaining in the GI tract and reduces absorption
+C. It increases cardiac contractility
+D. It hydrolyzes sennosides
+
+Answer: B
+
+53.
+
+Which sequence correctly describes the action of anthraquinone glycosides after oral administration?
+
+A. Immediate stomach absorption → kidney → heart
+B. Colon microflora hydrolysis → active aglycones → effect in about 8–12 hours
+C. Liver oxidation → skin → kidney
+D. Direct absorption of free anthraquinone in the stomach
+
+Answer: B
+
+54.
+
+The sugar component of anthraquinone glycosides is important because it:
+
+A. Transports the aglycone to the large intestine
+B. Prevents all hydrolysis
+C. Converts anthraquinone into cholesterol
+D. Makes the aglycone water-insoluble
+
+Answer: A
+
+55.
+
+Sennosides A and B are best described as:
+
+A. Hetero-dianthrones containing rhein + aloe-emodin
+B. Homo-dianthrones containing two rhein anthrones
+C. C-glycosides containing barbaloin
+D. Cardiac glycosides
+
+Answer: B
+
+56.
+
+Sennosides C and D contain:
+
+A. Two identical rhein anthrones
+B. Rhein + aloe-emodin as different anthrones
+C. Two identical aloe-emodin anthrones
+D. Scillarenin + rhein
+
+Answer: B
+
+57.
+
+The C-C linkage in sennosides is important because it is:
+
+A. Easily cleaved by ordinary hydrolysis
+B. Difficult to cleave and resistant to hydrolysis
+C. Responsible for cardiac activity
+D. An O-glycosidic linkage
+
+Answer: B
+
+58.
+
+Cascara sagrada bark is aged for at least one year mainly to:
+
+A. Increase its emetic principle
+B. Lose its gripping properties through oxidation during storage
+C. Produce digoxin
+D. Convert it to Senna
+
+Answer: B
+
+59.
+
+Cascarosides A/B differ from C/D in their side chain as follows:
+
+A. A/B have R=CH2OH; C/D have R=CH3
+B. A/B have R=CH3; C/D have R=CH2OH
+C. Both have R=CH3
+D. Both have R=CH2OH
+
+Answer: A
+
+60.
+
+The hydrolysis sequence of Cascarosides A/B ultimately produces:
+
+A. Chrysaloin → chrysophanol
+B. Barbaloin → aloe-emodin
+C. Sennoside → rhein
+D. Scillaren A → scillarenin
+
+Answer: B
+
+⸻
+
+LEVEL 2 — 25 FLASHCARDS
+
+36.
+
+Q: Why is the glycon important pharmacokinetically?
+A: It confers solubility properties important for absorption and distribution.
+
+37.
+
+Q: What is the relationship between glycon solubility and aglycon solubility?
+A: Glycon is water-soluble/organic-solvent insoluble, whereas aglycon is water-insoluble/organic-solvent soluble.
+
+38.
+
+Q: What can happen to plant glycosides after injury or improper extraction?
+A: Plant enzymes may be released and hydrolyze the glycosides.
+
+39.
+
+Q: What are the major plant functions of glycosides?
+A: Detoxification, defense, sugar reserve, pigmentation and storage of toxins.
+
+40.
+
+Q: What is the relationship between C-glycosides and carbon?
+A: Their sugar is directly condensed with a carbon atom of the aglycon.
+
+41.
+
+Q: What is the main pharmacological effect of cardiac glycosides?
+A: They increase cardiac tone, excitability and contractility.
+
+42.
+
+Q: What is the sequence following Na-K ATPase inhibition?
+A: Increased intracellular calcium → increased inotropy; conduction velocity is reduced.
+
+43.
+
+Q: What happens in CHF following the positive inotropic effect?
+A: Cardiac output and cardiac work capacity increase without increased oxygen consumption, while heart rate decreases.
+
+44.
+
+Q: What are the essential lactone-ring features of cardioactive glycosides?
+A: A β-unsaturated 5- or 6-membered lactone at C17 in beta configuration.
+
+45.
+
+Q: What additional OH positions may occur in cardioactive glycosides?
+A: C5, C11 and C16.
+
+46.
+
+Q: What differentiates cardenolides from bufadienolides?
+A: The lactone ring: five-membered in cardenolides and six-membered in bufadienolides.
+
+47.
+
+Q: What is the biosynthetic precursor sequence given for cardiac aglycones?
+A: Squalene → cholesterol → pregnenolone → cardenolide or bufadienolide.
+
+48.
+
+Q: What does addition of C2 to pregnenolone produce?
+A: Cardenolide.
+
+49.
+
+Q: What does addition of C3 to pregnenolone produce?
+A: Bufadienolide.
+
+50.
+
+Q: Which important glycosides occur in Digitalis purpurea?
+A: Digitoxin, gitoxin and gitaloxin.
+
+51.
+
+Q: Why is Digitalis lanata considered highly toxic?
+A: All its parts are highly toxic, and small amounts can be fatal.
+
+52.
+
+Q: What potent glycosides occur in Digitalis lanata?
+A: Lannatoside A, B and C.
+
+53.
+
+Q: What is the main constituent of Nerium oleander mentioned in the lecture?
+A: Oleandrin.
+
+54.
+
+Q: What gastrointestinal symptoms can occur in oleandrin poisoning?
+A: Nausea, abdominal pain, vomiting, increased salivation and diarrhea, potentially containing blood.
+
+55.
+
+Q: What cardiac abnormalities may occur in oleandrin poisoning?
+A: Tachyarrhythmia and bradyarrhythmia.
+
+56.
+
+Q: What CNS symptoms may occur in oleandrin poisoning?
+A: Drowsiness, tremors and seizures.
+
+57.
+
+Q: What are anthraquinone glycosides hydrolyzed into?
+A: Di-, tri- or tetrahydroxyl anthraquinones or modifications of these compounds.
+
+58.
+
+Q: When do anthraquinone glycosides usually produce their effect?
+A: About 8–12 hours after oral administration.
+
+59.
+
+Q: What is the recommended duration limit for Senna and other stimulant laxatives in habitual constipation?
+A: They should not be used for more than one week.
+
+60.
+
+Q: What are the two main hydrolysis pathways of Cascara constituents?
+A: Cascarosides A/B → barbaloin → aloe-emodin; C/D → chrysaloin → chrysophanol.
+
+⸻
+
+LEVEL 3 — HARD
+
+20 MCQs
+
+61.
+
+A glycoside contains a sugar that increases its water solubility while the non-sugar portion provides the pharmacological effect. Which interpretation is most consistent with the lecture?
+
+A. Both pharmacological activity and solubility are determined mainly by the aglycon
+B. Glycon primarily affects solubility/kinetics, while aglycon primarily determines pharmacological activity
+C. Glycon is always organic-solvent soluble and aglycon water-soluble
+D. Neither component contributes to the properties of the molecule
+
+Answer: B
+
+62.
+
+A plant cell contains glycosides and separate enzymes. Tissue injury occurs during extraction. Which event is most consistent with the lecture?
+
+A. Enzymes may be released and hydrolyze the glycosides into glycon and aglycon
+B. Glycosides become resistant to all hydrolysis
+C. The enzymes convert all glycosides into steroids
+D. Only alkalis can then hydrolyze the glycosides
+
+Answer: A
+
+63.
+
+A steroidal compound lacks the α,β-unsaturated lactone ring at C17. Based strictly on the lecture, which conclusion is most appropriate?
+
+A. It will necessarily become more active
+B. It cannot function as the cardioactive drug described because the lactone is required
+C. It becomes an anthraquinone
+D. It becomes a C-glycoside
+
+Answer: B
+
+64.
+
+Consider a cardioactive compound with a β-OH at C3, β-OH at C14, β-unsaturated five-membered lactone at C17, and Cis-Trans-Cis ring junctions. Which classification best fits it?
+
+A. Cardenolide-type cardioactive glycoside
+B. Bufadienolide-type anthraquinone
+C. Dianthrone
+D. C-glycoside
+
+Answer: A
+
+65.
+
+Two cardioactive compounds are identical except that Compound X has the β-OH at C14 while Compound Y lacks it. According to the lecture, which prediction is appropriate?
+
+A. Y should be more rapidly active
+B. X should have greater activity and more rapid action
+C. Both must have identical activity
+D. C14 has no relationship to activity
+
+Answer: B
+
+66.
+
+A cardioactive glycoside contains a six-membered lactone at C17 and a β-OH at C14. Which combination of properties is most consistent with the lecture?
+
+A. Bufadienolide; C14 β-OH contributes to high activity and rapid action
+B. Cardenolide; C14 β-OH eliminates activity
+C. Anthraquinone; C14 determines laxative action
+D. Dianthrone; C14 determines hydrolysis
+
+Answer: A
+
+67.
+
+If a cardiac glycoside inhibits Na-K ATPase, which chain of events best follows the lecture?
+
+A. Decreased intracellular calcium → decreased inotropy → increased heart rate
+B. Increased intracellular calcium → increased inotropy → increased cardiac output in CHF
+C. Increased intracellular calcium → reduced cardiac output
+D. Decreased calcium → increased conduction velocity
+
+Answer: B
+
+68.
+
+Which combination correctly distinguishes Digitalis purpurea from Digitalis lanata?
+
+A. Purpurea contains digoxigenin and diginatigenin; lanata does not
+B. Lanata contains digoxigenin and diginatigenin, and is a source for isolating digoxin
+C. Both contain exactly the same constituents
+D. Purpurea is the stated source of rapid-absorbing digoxin
+
+Answer: B
+
+69.
+
+A patient requires rapid treatment of CHF with the Digitalis preparation discussed in the lecture. Which source is particularly valuable because of faster GI absorption?
+
+A. Digitalis purpurea
+B. Digitalis lanata
+C. Senna
+D. Cascara sagrada
+
+Answer: B
+
+70.
+
+A patient exposed to Nerium oleander develops vomiting, diarrhea and later cardiac rhythm abnormalities. Which combination best matches the lecture’s management principle?
+
+A. Activated charcoal plus monitoring vital signs, electrolytes and fluid balance
+B. Immediate administration of Senna
+C. Avoid all monitoring because effects are limited to the GI tract
+D. Increase absorption of oleandrin
+
+Answer: A
+
+71.
+
+Which sequence correctly represents the pharmacological fate of an oral anthraquinone glucoside?
+
+A. Stomach → immediate free aglycon → cardiac muscle
+B. Colon microflora enzymes → hydrolysis → active aglycon → stimulant laxative effect
+C. Kidney → hydrolysis → colon
+D. Small intestine → direct conversion to sennoside
+
+Answer: B
+
+72.
+
+Why does the lecture emphasize that free anthraquinones have little therapeutic activity?
+
+A. Because the sugar portion helps transport the aglycon to the large intestine, where it acts
+B. Because free anthraquinones cannot contain hydroxyl groups
+C. Because anthraquinones are cardiac glycosides
+D. Because free anthraquinones are always water-soluble
+
+Answer: A
+
+73.
+
+A laxative contains anthrone glycosides rather than anthraquinone glycosides. According to the lecture, what distinction is expected?
+
+A. Anthrone glycosides have a more irritant and gripping laxative effect
+B. Anthrone glycosides have no laxative action
+C. Anthraquinones are always more gripping
+D. Both have exactly the same effect
+
+Answer: A
+
+74.
+
+A sample contains Sennoside A and Sennoside B. Which structural interpretation is correct?
+
+A. They are hetero-dianthrones containing rhein and aloe-emodin
+B. They are homo-dianthrones containing two identical rhein anthrones
+C. They are cardiac glycosides
+D. They are C-glycosides containing barbaloin
+
+Answer: B
+
+75.
+
+A sample contains Sennoside C and D. Which statement best explains their relationship?
+
+A. They contain two identical anthrones
+B. They contain different anthrones, rhein and aloe-emodin, and are optical isomers
+C. They are identical to A and B in anthrone composition
+D. They are O-glycosides of scillarenin
+
+Answer: B
+
+76.
+
+Why is ferric chloride oxidative hydrolysis used in the lecture’s discussion of sennosides?
+
+A. Their C-C linkage is difficult to cleave by ordinary hydrolysis
+B. It creates the glycon
+C. It prevents release of anthraquinones
+D. It converts them into cardiac glycosides
+
+Answer: A
+
+77.
+
+A Cascara preparation contains Cascarosides A/B. Which sequence correctly predicts its hydrolysis products?
+
+A. Cascaroside → chrysaloin → chrysophanol
+B. Cascaroside → barbaloin → aloe-emodin
+C. Cascaroside → scillarenin → glucose
+D. Cascaroside → sennoside → rhein
+
+Answer: B
+
+78.
+
+A Cascara preparation contains Cascarosides C/D. Which sequence is correct?
+
+A. O-glucose hydrolysis → chrysaloin → oxidative hydrolysis → chrysophanol
+B. O-glucose hydrolysis → barbaloin → oxidative hydrolysis → aloe-emodin
+C. O-glucose hydrolysis → digoxin → rhein
+D. O-glucose hydrolysis → scillaren A → scillarenin
+
+Answer: A
+
+79.
+
+Why must Cascara bark be aged before medicinal use?
+
+A. Fresh bark contains an emetic principle, and aging reduces gripping properties through oxidation
+B. Aging creates its glycosides from glucose
+C. Aging converts it into Senna
+D. Aging increases its emetic principle
+
+Answer: A
+
+80.
+
+Which comparison is entirely consistent with the lecture?
+
+A. Senna—major sennosides A/B; Cascara—cascarosides; Aloe—barbaloin; Rhubarb—chrysophanol/rhein/aloe-emodin
+B. Senna—oleandrin; Cascara—digoxin; Aloe—scillaren A; Rhubarb—digitoxin
+C. Senna—barbaloin; Cascara—sennoside A; Aloe—digoxin; Rhubarb—oleandrin
+D. All four contain the same principal glycoside
+
+Answer: A
+
+⸻
+
+LEVEL 3 — 20 FLASHCARDS
+
+61.
+
+Q: A glycoside is hydrolyzed. What two functional portions must be considered when predicting its properties?
+A: The glycon, which contributes mainly to solubility/absorption/distribution, and the aglycon, which is mainly responsible for pharmacological activity.
+
+62.
+
+Q: Why can glycosides be considered sugar ethers in a simplified description?
+A: Because the glycosidic linkage involves the sugar component linked through an oxygen atom.
+
+63.
+
+Q: Why do alpha and beta glycosides exist?
+A: Because the sugar residue has an asymmetrical/chiral carbon at C1, the acetal carbon, allowing different stereochemical orientations.
+
+64.
+
+Q: What stereochemical form of glycosides is naturally found in plants according to the lecture?
+A: Beta forms.
+
+65.
+
+Q: What three structural characteristics are especially important for conversion of a steroidal nucleus into a cardioactive drug?
+A: An α,β-unsaturated lactone at C17 in beta configuration, β-OH at C14, and the appropriate β-C3-OH glycosidic linkage.
+
+66.
+
+Q: Why is the C3 sugar linkage important in cardiac glycosides?
+A: The sugar attached to β-C3-OH increases absorption and distribution in the body.
+
+67.
+
+Q: Why are the Cis-Trans-Cis ring junctions important?
+A: They make the cyclopentaphenanthrene nucleus very stable and thus more active.
+
+68.
+
+Q: How does C17 lactone-ring size divide cardioactive genins?
+A: Five-membered ring = cardenolide; six-membered ring = bufadienolide.
+
+69.
+
+Q: How does the lecture connect pregnenolone to the two cardiac glycoside classes?
+A: Addition of a C2 unit gives cardenolide, while addition of a C3 unit gives bufadienolide.
+
+70.
+
+Q: Why is Digoxin from D. lanata particularly useful for rapid CHF treatment?
+A: It is more rapidly absorbed from the gastrointestinal tract than the D. purpurea glycosides.
+
+71.
+
+Q: What combination of systems can be affected by oleandrin poisoning?
+A: Gastrointestinal, cardiac and central nervous systems.
+
+72.
+
+Q: Why can fluid and electrolyte monitoring be important in oleandrin poisoning?
+A: Vomiting and diarrhea may cause hypovolemia.
+
+73.
+
+Q: What is the functional role of sugar in anthraquinone glycosides?
+A: It transports the aglycone to the large intestine, where the aglycone acts as a stimulant laxative.
+
+74.
+
+Q: What produces the active aglycones from oral anthraquinone glucosides?
+A: Enzymes of the colonic microflora.
+
+75.
+
+Q: Why should stimulant laxatives not be used long-term?
+A: They are habit forming and long-term use may cause laxative dependence and loss of normal bowel function.
+
+76.
+
+Q: What structural relationship exists between Sennosides A/B and C/D?
+A: A/B are homo-dianthrones with two rhein anthrones; C/D are hetero-anthrones containing rhein and aloe-emodin.
+
+77.
+
+Q: Why is oxidative hydrolysis required for the sennoside dianthrone linkage?
+A: The C-C linkage between the dianthrones is difficult to cleave and resistant to hydrolysis.
+
+78.
+
+Q: What stereochemical difference is responsible for the distinction among the Cascarosides described?
+A: The difference is due to stereochemistry of the carbon at the glycosidic linkage.
+
+79.
+
+Q: What is the complete A/B Cascara pathway?
+A: Cascaroside A/B → hydrolysis of O-glucose → barbaloin → oxidative hydrolysis → free aloe-emodin.
+
+80.
+
+Q: What is the complete C/D Cascara pathway?
+A: Cascaroside C/D → hydrolysis of O-glucose → chrysaloin → oxidative hydrolysis → free chrysophanol.
+
+⸻
